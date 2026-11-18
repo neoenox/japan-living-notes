@@ -7,7 +7,7 @@ GUIDE = sys.argv[1] if len(sys.argv) > 1 else "rental"
 CFG = guides.CONFIGS[GUIDE]()
 FIGS, TITLES, SUMMARY, TILES, CALLOUT = CFG["figs"], CFG["titles"], CFG["summary"], CFG["tiles"], CFG["callout"]
 
-root = pathlib.Path("E:/foreigner-note")
+root = pathlib.Path(__file__).resolve().parent.parent
 md = (root / CFG["md"]).read_text(encoding="utf-8")
 md = re.sub(r"^(☐ .*)$", lambda m: "\n<div class='ck'>" + m.group(1) + "</div>\n", md, flags=re.M)
 _l = md.split("\n"); _o = []

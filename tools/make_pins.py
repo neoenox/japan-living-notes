@@ -1,4 +1,5 @@
-import iso
+import iso, pathlib
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 from playwright.sync_api import sync_playwright
 pins=[('costs',2,'Japan apartment initial costs explained','Deposit, key money, agency fee, guarantor fee: what you really pay','4-6x monthly rent'),
 ('foreigners',3,'How foreigners can rent an apartment in Japan','Documents, guarantors, and what to do if you are rejected','Step by step'),
@@ -19,10 +20,10 @@ with sync_playwright() as pw:
     for k,n,t,s,pill in pins:
         h=f"<html><head><meta charset=utf-8><link href='https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Inter:wght@500;700&display=swap' rel=stylesheet><style>{css}</style></head><body><div class=top>JAPAN LIVING NOTES</div><div class=art>{iso.scene(n)}</div><div class=card><h1>{t}</h1><p>{s}</p><div class=pill>{pill}</div><div class=ft>Illustrated PDF + Excel</div></div></body></html>"
         pg.set_content(h,wait_until='networkidle'); pg.wait_for_timeout(300)
-        pg.screenshot(path=f'../marketing/pins/pin_{k}.png')
+        pg.screenshot(path=str(ROOT / f'marketing/pins/pin_{k}.png'))
     b.close()
 from PIL import Image
-ims=[Image.open(f'../marketing/pins/pin_{k}.png').resize((333,500)) for k,*_ in pins]
+ims=[Image.open(ROOT / f'marketing/pins/pin_{k}.png').resize((333,500)) for k,*_ in pins]
 sh=Image.new('RGB',(333*6,500))
 for i,im in enumerate(ims): sh.paste(im,(i*333,0))
-sh.save('../marketing/pins/_sheet.png')
+sh.save(str(ROOT / 'marketing/pins/_sheet.png'))

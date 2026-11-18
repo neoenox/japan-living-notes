@@ -1,4 +1,6 @@
-import iso
+import iso, pathlib
+HERE = pathlib.Path(__file__).resolve().parent
+ROOT = HERE.parent
 from playwright.sync_api import sync_playwright
 art = iso.scene(10)
 html = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -22,8 +24,8 @@ h1{{font-family:Fraunces,serif;font-size:98px;line-height:1.05;color:#1F3A5F;fon
 <div class="sub">Gas, electricity, water, internet, address registration and your first 30 days</div></div>
 <div class="chips"><div class="chip">Illustrated PDF</div><div class="chip">5 email templates</div><div class="chip o">Instant download</div></div>
 <div class="foot">Japan Living Notes</div></body></html>"""
-open('cover-movein.html','w',encoding='utf-8').write(html)
+open(HERE / 'cover-movein.html','w',encoding='utf-8').write(html)
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome"); pg = b.new_page(viewport={'width':1600,'height':1000})
-    pg.goto('file:///E:/foreigner-note/tools/cover-movein.html', wait_until='networkidle'); pg.wait_for_timeout(500)
-    pg.screenshot(path='../cover-movein.png'); b.close()
+    pg.goto((HERE / 'cover-movein.html').as_uri(), wait_until='networkidle'); pg.wait_for_timeout(500)
+    pg.screenshot(path=str(ROOT / 'cover-movein.png')); b.close()

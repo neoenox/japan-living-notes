@@ -12,8 +12,9 @@
 ## 再生成
 
 ```bash
+# リポジトリのどこから実行してもよい（パスはファイルの位置から決まる）
 pip install markdown playwright openpyxl pymupdf pillow
-python tools/make_pdf.py rental   # PDF（movein も可）
+python tools/make_pdf.py rental   # PDF（movein も可）。どのフォルダからでも実行できる
 python tools/make_calc.py   # Excel
 python tools/make_cover.py  # Payhip用の表紙
 python tools/make_pins.py   # Pinterest用ピン画像

@@ -112,4 +112,5 @@ for i,(a,b) in enumerate(ex, 3):
 e.cell(10,1,"TOTAL").font = bold; e.cell(10,2,"=SUM(B3:B9)").number_format = Y; e.cell(10,2).font = bold
 e.cell(11,1,"As multiple of rent"); e.cell(11,2,"=B10/80000").number_format = "0.0"
 e.column_dimensions["A"].width = 40; e.column_dimensions["B"].width = 16
-wb.save("E:/foreigner-note/initial-cost-calculator.xlsx")
+import pathlib
+wb.save(str(pathlib.Path(__file__).resolve().parent.parent / "initial-cost-calculator.xlsx"))

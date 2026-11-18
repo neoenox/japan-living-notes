@@ -1,7 +1,7 @@
 # Renting an Apartment in Japan
 ### A Practical Guide for Foreign Residents: Costs, Contracts, Emails, and Move-in
 
-*Edition: 2026 (draft). Figures are typical ranges, not fixed rules. Always confirm the details with your real estate agent.*
+*Edition: 2026. Figures are typical ranges, not fixed rules. Always confirm the details with your real estate agent.*
 
 ---
 
