@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+tools/pv/
+tools/iso_test.*
+tools/guide.html
+tools/cover2.html
+marketing/samples/_*.png
+marketing/pins/_*.png
