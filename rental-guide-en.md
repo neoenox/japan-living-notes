@@ -500,13 +500,21 @@ See the included spreadsheet. Enter rent, management fee, deposit and key money 
 
 ## Appendix H: Official and Support Resources
 
-*Verify the current contact details on each official website.*
+*Web addresses were checked when this edition was made. Pages change, so verify the current details on each official site.*
 
-- **Ministry of Land, Infrastructure, Transport and Tourism (MLIT):** rental guidelines, including restoration to original condition.
-- **Foreign Residents Support Center (FRESC):** multilingual consultation for foreign residents.
-- **Japan Legal Support Center (Houterasu):** information and referral for legal problems, with multilingual support.
-- **Your city or ward office:** residence registration, garbage rules, and local multilingual counters.
-- **Local consumer centers:** consultation about contracts and billing disputes.
+- **Ministry of Land, Infrastructure, Transport and Tourism (MLIT):** the guideline on restoration to original condition (原状回復をめぐるトラブルとガイドライン).  
+  <https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000021.html>
+- **Immigration Services Agency of Japan:** guidance for foreign residents, including address reports and residence cards.  
+  <https://www.moj.go.jp/isa/support/guidance/index.html>
+- **Foreign Residents Support Center (FRESC):** multilingual consultation for foreign residents.  
+  <https://www.moj.go.jp/isa/support/fresc/fresc01.html>
+- **Japan Legal Support Center (Houterasu):** information and referral for legal problems, with multilingual support. Use the language options on the site.  
+  <https://www.houterasu.or.jp/>
+- **National Consumer Affairs Center of Japan:** consultation about contracts and billing disputes. Local consumer centers are listed on the site.  
+  <https://www.kokusen.go.jp/>
+- **UR (Urban Renaissance Agency):** public rental housing that generally charges no key money, agency fee, or guarantor fee.  
+  <https://www.ur-net.go.jp/>
+- **Your city or ward office:** residence registration, garbage rules, and local multilingual counters. Search for your city's official website.
 
 ---
 

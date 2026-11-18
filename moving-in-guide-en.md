@@ -367,13 +367,18 @@ A simple order that works for most people:
 
 ## Appendix E: Official and Support Resources
 
-*Verify the current contact details on each official website.*
+*Web addresses were checked when this edition was made. Pages change, so verify the current details on each official site.*
 
-- **Your city or ward office:** address registration, health insurance, pension, garbage rules, and multilingual counters.
-- **Immigration Services Agency of Japan:** information about residence cards and address reports.
-- **Japan Post:** mail forwarding (e-Tenkyo) and official guidance.
+- **Immigration Services Agency of Japan:** guidance for foreign residents, including address reports and residence cards.  
+  <https://www.moj.go.jp/isa/support/guidance/index.html>
+- **Japan Post:** mail forwarding (e-Tenkyo / e転居) and official guidance.  
+  <https://www.post.japanpost.jp/service/tenkyo/index.html>
+- **Foreign Residents Support Center (FRESC):** multilingual consultation for foreign residents.  
+  <https://www.moj.go.jp/isa/support/fresc/fresc01.html>
+- **National Consumer Affairs Center of Japan:** consultation about contracts and billing disputes.  
+  <https://www.kokusen.go.jp/>
+- **Your city or ward office:** address registration, health insurance, pension, garbage rules, and multilingual counters. Search for your city's official website.
 - **Your waterworks bureau, electricity company, and gas company:** start and stop procedures and emergency lines.
-- **Foreign Residents Support Center (FRESC):** multilingual consultation for foreign residents.
 
 ---
 

@@ -118,6 +118,7 @@ ul { list-style:none; padding-left:0; } ul li { position:relative; padding-left:
 ul li::before { content:''; position:absolute; left:1pt; top:8pt; width:7pt; height:1.5pt; background:var(--red); }
 ol li::marker { color:var(--red); font-weight:700; }
 strong { color:var(--navy); font-weight:600; }
+a { color:#1F4E8C; text-decoration:none; overflow-wrap:anywhere; font-size:8.5pt; }
 table { border-collapse: collapse; width:100%; margin:10pt 0; font-size:9pt; }
 tr { page-break-inside: avoid; }
 th { color:var(--navy); text-align:left; font-size:7.5pt; letter-spacing:1.5pt; text-transform:uppercase; border-bottom:1.5pt solid var(--navy); padding:5pt 8pt 5pt 0; }

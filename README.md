@@ -15,9 +15,12 @@
 # リポジトリのどこから実行してもよい（パスはファイルの位置から決まる）
 pip install markdown playwright openpyxl pymupdf pillow
 python tools/make_pdf.py rental   # PDF（movein も可）。どのフォルダからでも実行できる
+python tools/check_pdf.py Renting-an-Apartment-in-Japan.pdf 37   # アップロード前の確認
 python tools/make_calc.py   # Excel
 python tools/make_cover.py  # Payhip用の表紙
 python tools/make_pins.py   # Pinterest用ピン画像
 ```
+
+重要: PDFをPayhipに上げる前は、必ず `docs/WORKFLOW.md` の「6a」の確認フロー（自動チェック＋本人の確認）を通す。
 
 注意: 数字・制度の記述は一般的な目安。出典を確認してから更新すること。GitHub Actionsは使用しない（無効）。
