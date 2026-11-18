@@ -40,6 +40,7 @@ def rental():
                  5: ("warn", "Do not pay large sums at the application stage", "If a small holding fee is requested, ask whether it is refundable and get that in writing."),
                  6: ("tip", "Photograph everything on key day", "Take photos of every scratch and stain and email them to the management company. This protects your deposit later."),
                  8: ("tip", "Ask for an itemized bill", "If the move-out charge seems too high, ask for a detailed breakdown (明細) and compare it with the official guideline.")},
+        callout_before={6: "6.4", 8: "8.3"},
     )
 
 

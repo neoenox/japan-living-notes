@@ -68,7 +68,20 @@ Size is given in square meters (㎡) and sometimes in tatami mats (畳, jo). One
 - **Ordinary lease (普通借家契約):** the standard. Usually 2 years, renewable. The tenant is strongly protected.
 - **Fixed-term lease (定期借家契約):** ends on a fixed date and may not renew. Rent is often lower. Be careful if you want to stay long.
 
-Always check which one you are signing.
+| Check before signing | Ordinary lease | Fixed-term lease |
+|---|---|---|
+| At the end | Usually renewable | Ends on the listed date |
+| Best if | You may want to stay longer | You know when you will leave |
+| Ask the agent | Renewal fee and renewal process | Exact end date and what happens next |
+
+Always check which one you are signing. A lower rent is not a good deal if the lease ends sooner than your plans.
+
+**Questions to ask before viewing**
+
+- Which lease type is this?
+- When does the term end?
+- Is there a renewal fee?
+- How much notice is required to leave?
 
 ---
 
@@ -251,13 +264,6 @@ On the day you get the keys, photograph **every scratch, stain, or damage** and 
 ### 7.3 Garbage and neighbors
 
 Garbage rules differ by city and sometimes by building. Ask the management company for the schedule and the correct bags. Greeting your neighbors briefly is welcome but not required in most urban apartments.
-
-### 7.4 Basic rules to remember
-
-- Keep noise low at night.
-- Do not smoke on balconies unless allowed.
-- Do not put out garbage on the wrong day. Complaints are common.
-- Report leaks and breakdowns to the management company quickly.
 
 ---
 

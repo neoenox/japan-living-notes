@@ -6,6 +6,7 @@ import guides
 GUIDE = sys.argv[1] if len(sys.argv) > 1 else "rental"
 CFG = guides.CONFIGS[GUIDE]()
 FIGS, TITLES, SUMMARY, TILES, CALLOUT = CFG["figs"], CFG["titles"], CFG["summary"], CFG["tiles"], CFG["callout"]
+CALLOUT_BEFORE = CFG.get("callout_before", {})
 
 root = pathlib.Path(__file__).resolve().parent.parent
 md = (root / CFG["md"]).read_text(encoding="utf-8")
@@ -47,10 +48,19 @@ def chapter_block(chunk):
     n = int(m.group(1))
     rest = chunk[m.end():]
     head = opener(n) + f"<div class='chbar'>CHAPTER {n} <i>/</i> {TITLES[n].upper()}</div>" + FIGS.get(n, "")
-    tail = ""
+    callout = ""
     if n in CALLOUT:
         k, t, x = CALLOUT[n]
-        tail = f"<div class='callout {k}'><div class='ctype'>{'CAUTION' if k == 'warn' else 'TIP'}</div><div><b>{t}</b><br>{x}</div></div>"
+        callout = f"<div class='callout {k}'><div class='ctype'>{'CAUTION' if k == 'warn' else 'TIP'}</div><div><b>{t}</b><br>{x}</div></div>"
+    anchor = CALLOUT_BEFORE.get(n)
+    if anchor and callout:
+        target = re.search(rf"<h3>{re.escape(anchor)}(?:\b|:)", rest)
+        if not target:
+            raise ValueError(f"Callout anchor not found: chapter {n}, heading {anchor}")
+        rest = rest[:target.start()] + callout + rest[target.start():]
+        tail = ""
+    else:
+        tail = callout
     return head + rest + tail
 
 
@@ -111,25 +121,25 @@ h2.aps { border:0; font-size:26pt; margin-top:4pt; }
 h2.ap { background:none; color:var(--navy); border-top:3pt solid var(--red); border-bottom:.75pt solid #cfcabd; padding:8pt 0 5pt; border-radius:0; }
 .chbar { font-size:7.5pt; letter-spacing:2.5pt; font-weight:700; color:var(--red); border-bottom:.5pt solid #cfcabd; padding-bottom:5pt; margin-bottom:12pt; } .chbar i { color:#b9b3a4; font-style:normal; margin:0 4pt; } 
 h3, h4 { page-break-after: avoid; }
-h3 { color:var(--navy); margin:20pt 0 6pt; font-size:14pt; font-weight:600; }
+h3 { color:var(--navy); margin:8pt 0 5pt; font-size:14pt; font-weight:600; }
 h3::before { content:''; display:block; width:22pt; height:3pt; background:var(--red); margin-bottom:6pt; }
 h4 { margin:10pt 0 2pt; color:var(--navy); font-size:10.5pt; }
-ul { list-style:none; padding-left:0; } ul li { position:relative; padding-left:15pt; margin:4pt 0; }
+ul { list-style:none; padding-left:0; page-break-inside:avoid; } ul li { position:relative; padding-left:15pt; margin:2pt 0; }
 ul li::before { content:''; position:absolute; left:1pt; top:8pt; width:7pt; height:1.5pt; background:var(--red); }
 ol li::marker { color:var(--red); font-weight:700; }
 strong { color:var(--navy); font-weight:600; }
 a { color:#1F4E8C; text-decoration:none; overflow-wrap:anywhere; font-size:8.5pt; }
 table { border-collapse: collapse; width:100%; margin:10pt 0; font-size:9pt; }
 tr { page-break-inside: avoid; }
-th { color:var(--navy); text-align:left; font-size:7.5pt; letter-spacing:1.5pt; text-transform:uppercase; border-bottom:1.5pt solid var(--navy); padding:5pt 8pt 5pt 0; }
-td { border-bottom:.5pt solid #dcd8ce; padding:5pt 8pt 5pt 0; vertical-align:top; }
+th { color:var(--navy); text-align:left; font-size:7.5pt; letter-spacing:1.5pt; text-transform:uppercase; border-bottom:1.5pt solid var(--navy); padding:4pt 8pt 4pt 0; }
+td { border-bottom:.5pt solid #dcd8ce; padding:4pt 8pt 4pt 0; vertical-align:top; }
 blockquote { page-break-inside: avoid; background:var(--paper); border-left:2.5pt solid var(--navy); margin:10pt 0; padding:6pt 14pt; }
 hr { border:0; border-top:.5pt solid #cfcabd; margin:14pt 0; }
 .ck { margin:4pt 0; padding-left:20pt; }
 .fig { margin:14pt 0 16pt; padding:14pt 16pt 10pt; background:var(--paper); border-radius:3pt; page-break-inside:avoid; }
 .figt { font-size:7.5pt; letter-spacing:2.5pt; text-transform:uppercase; font-weight:700; color:var(--red); margin-bottom:8pt; }
 .cap { font-size:8pt; color:var(--mute); margin-top:6pt; line-height:1.45; }
-.callout { display:flex; gap:14pt; padding:12pt 16pt; margin:18pt 0; page-break-inside:avoid; font-size:9.5pt; background:var(--paper); border-left:3pt solid var(--navy); }
+.callout { display:flex; gap:14pt; padding:12pt 16pt; margin:12pt 0; page-break-inside:avoid; font-size:9.5pt; background:var(--paper); border-left:3pt solid var(--navy); }
 .callout.warn { border-left-color:var(--red); }
 .callout .ctype { font-size:7pt; letter-spacing:2pt; font-weight:800; color:var(--navy); padding-top:2pt; width:44pt; flex:none; } .callout.warn .ctype { color:var(--red); }
 """

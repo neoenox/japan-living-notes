@@ -47,6 +47,12 @@ def main():
             ctx = text[max(0, m.start() - 30): m.end() + 30].replace("\n", " ")
             print(f"  NG: found '{m.group(0)}' ... {ctx}"); ok = False
 
+    for i, page in enumerate(doc, 1):
+        page_text = " ".join(page.get_text().split())
+        if len(page_text) < 250 and len(page.get_drawings()) < 10:
+            print(f"  NG: page {i} is nearly empty ({len(page_text)} characters)")
+            ok = False
+
     urls = set(re.findall(r"https?://[^\s)>\]]+", text))
     for p in doc:
         for l in p.get_links():
