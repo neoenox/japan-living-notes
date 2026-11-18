@@ -28,11 +28,11 @@
 ### 0-2. 商品ページの確認
 
 - [x] サンプルが表示される（表紙＋費用の図＋メール文面。2026-11-18 に公開ページで確認）
-- [x] 「Visible」で公開されている（第1弾・第2弾とも。ダッシュボードで確認）
-- [x] 価格 $9、PDF（37ページ）、Excelの記載が現状と一致（公開ページで確認）
-- [ ] 商品ページの説明文に `[Decide: ...]`／`[your email]` の残りがないか（商品ページ本文では見つからなかった。[sales-page-en.md](../sales-page-en.md#L80) の「Do I get updates?」は商品ページに未掲載なので、載せる場合は守れる約束だけを書く）
+- [x] 「Visible」で公開されている（第1弾・第2弾とも。2026-11-18 に一般公開ページでも確認）
+- [x] 価格 $9、PDF（35ページ）、Excelの記載が現状と一致（2026-11-18 の差し替え後に更新）
+- [x] 商品ページの説明文に `[Decide: ...]`／`[your email]` がなく、[sales-page-en.md](../sales-page-en.md) の制作元からも除去した
 - [ ] 公開PDFに「draft」がない（Payhipのファイルのダウンロード確認は自動化できず未確認。Payhipの商品編集画面でPDFをダウンロードして、目次ページを見る）
-- [ ] ストアページの「About Me」が雛形文のまま（`You can describe who you are...`）。ストア編集で書き換える（実績・経歴は書かない）
+- [ ] ストアページの「About Me」が雛形文のまま（`You can describe who you are...`）。[marketing/payhip-store-about.md](payhip-store-about.md) の文面をストア編集で設定する
 
 ### 0-3. Pinterestの確認
 
@@ -55,6 +55,12 @@
 | 6 | 11/24(火) | `pins/pin_moveout.png` | Moving out of a Japan apartment: get your deposit back |
 
 予約状況（2026-11-18 時点）: 6件すべてを、上の日付の 10:00（日本時間）で Pinterest に予約済み。アカウントの「予約投稿ピン」に 6 件と表示される。
+
+一般公開ページの確認（2026-11-18）:
+
+- プロフィールのAbout、PayhipストアへのWebサイトリンク、公開ボード`Japan apartment guide`を確認した。
+- 一般公開のボードデータに表示される3画像は、`pin_costs.png`、`pin_foreigners.png`、`pin_emails.png`と一致した。
+- 6件の予約日時と宛先リンクは管理画面が必要なため、この一般公開確認だけでは判定できない。
 
 注意:
 - 予約後はピンの内容を変更できない（Pinterestの確認ダイアログの表示どおり）。直したい場合は、予約を取り消して作り直す。
@@ -93,7 +99,7 @@
 - Description: `Written notice, move-out inspection, repair costs, what can and cannot be charged. #japanapartment #livinginjapan #deposit`
 - Alt text: `Isometric illustration of a move-out calendar and an envelope`
 
-注: Day 5 と Day 6 は賃貸ガイド（第1弾）の第7・8章の内容。第2弾（Moving In）は未公開なので、リンク先は第1弾のままにする。
+注: Day 5 と Day 6 は賃貸ガイド（第1弾）の第7・8章を紹介する。第2弾（Moving In）も公開中だが、この6日間は第1弾の初売上を測るキャンペーンなので、リンク先は第1弾にする。
 
 ---
 

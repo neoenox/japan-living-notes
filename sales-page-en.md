@@ -1,6 +1,6 @@
 # Payhip 販売ページ文面（英語）
 
-> 使い方：下の「ページ本文」を Payhip の商品説明に貼る。`[ ]` は公開前に自分で埋める。
+> 使い方：下の「ページ本文」を Payhip の商品説明に貼る。公開前に残存プレースホルダーがないことを確認する。
 > ルール：実績・レビュー・「◯人が購入」などは**実際に得るまで書かない**。
 
 ## 商品設定
@@ -9,8 +9,8 @@
 |---|---|
 | 商品名 | Renting an Apartment in Japan: The Practical Guide for Foreigners |
 | 価格 | $9（初期）。購入5件で $12、反応を見て $15 へ |
-| 配布物 | PDF（37ページ）、Excel（Initial Cost Calculator）、メール文面テキスト（任意） |
-| 返金 | 購入後7日以内、理由を問わず返金（運用できる範囲で） |
+| 配布物 | PDF（35ページ）、Excel（Initial Cost Calculator）、メール文面テキスト（任意） |
+| 返金 | 購入後7日以内。PayhipストアのContactから連絡を受けた場合に返金 |
 | タグ候補 | Japan, apartment, rental, expat, moving to Japan, housing |
 | 検索用説明（160字） | Step-by-step guide to renting an apartment in Japan as a foreigner: costs, contract, email templates, and an Excel cost calculator. |
 
@@ -38,7 +38,7 @@ This guide shows you what happens at each step and gives you the tools to handle
 
 ## What you get
 
-**1. The Guide (illustrated PDF, 37 pages)**
+**1. The Guide (illustrated PDF, 35 pages)**
 A clear walkthrough from first inquiry to move-out:
 - How agencies, landlords, and guarantor companies work
 - Every initial cost explained: deposit, key money, agency fee, guarantor fee, insurance
@@ -66,7 +66,7 @@ Viewing, move-in, and documents checklists. 25 key rental terms in Japanese, rom
 
 ## Sample pages
 
-[Attach 2-3 sample pages: the cost breakdown table, one email template, the viewing checklist.]
+The live Payhip gallery currently shows the cover, the upfront-cost graphic, and a copy-and-paste email template.
 
 ## FAQ
 
@@ -77,10 +77,10 @@ No. It is general information. Costs and rules vary by city, landlord, and agenc
 Yes, the process is the same nationwide. Cost examples are typical ranges and may differ by area.
 
 **Do I get updates?**
-[Decide: e.g., "Free updates to this edition for 12 months via the same download link."] Only promise what you will do.
+Edition 2026 is the current release. Automatic future updates are not promised. If the edition changes, the listing will show the new edition.
 
 **What if it doesn't help me?**
-Email [your email] within 7 days for a refund.
+Send a message through the Contact link on the Japan Living Notes Payhip store within 7 days of purchase.
 
 **Which files do I get?**
 One PDF and one Excel file (works in Excel and Google Sheets).
@@ -97,9 +97,10 @@ One PDF and one Excel file (works in Excel and Google Sheets).
 
 - [x] 仲介手数料の上限（合計1か月分+税、借主の原則負担は0.5か月分+税）、14日以内の住所登録、原状回復ガイドラインを確認済み。解約予告期間・費用相場は目安として記載
 - [x] 著者経験の主張は載せない（公的資料ベースの表現に変更済み。実体験を足す場合のみ追記）
-- [ ] 更新の約束は守れる範囲にした
-- [ ] サンプルページを添付した
-- [ ] レビュー・実績の記載がない（得るまで書かない）
+- [x] 更新の自動提供を約束せず、現行版を明記した
+- [x] Payhipの公開ギャラリーにサンプル3種類（表紙、費用、メール）が表示されている
+- [x] レビュー・実績の記載がない（得るまで書かない）
+- [x] `[Decide: ...]` と `[your email]` のプレースホルダーを除去した
 
 ## 集客用の短文（Reddit等）
 
