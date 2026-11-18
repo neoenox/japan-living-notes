@@ -17,7 +17,10 @@
 |---|---|
 | `rental-guide-outline.md` | 構成案（章、付録、14日計画、指標） |
 | `rental-guide-en.md` | 英語の本文（第0〜9章、付録A〜H）。PDFの元データ |
-| `tools/make_pdf.py` | 本文 → HTML → PDF（Playwright）。表紙・扉・章バー・図を組み込む |
+| `tools/make_pdf.py` | 本文 → HTML → PDF（Playwright）。`rental` / `movein` を引数で選ぶ |
+| `tools/guides.py` | 各ガイドの設定（題名、扉の説明、図、ひと言コラム） |
+| `moving-in-guide-en.md` | 第2弾の英語本文 |
+| `sales-page-movein-en.md` | 第2弾の販売ページ文面 |
 | `tools/iso.py` | 立体イラストの描画（表紙、章の扉、間取り） |
 | `tools/art.py`, `tools/figs2.py` | 本文の図（流れ、関係者、費用、書類、マイソク、タイムライン） |
 | `tools/make_calc.py` | Excel初期費用計算シート（`initial-cost-calculator.xlsx`） |
@@ -42,7 +45,8 @@
 ```bash
 pip install markdown playwright openpyxl pymupdf pillow
 python -m playwright install chromium   # Chrome を使う場合は channel="chrome"
-python tools/make_pdf.py                # Renting-an-Apartment-in-Japan.pdf を出力
+python tools/make_pdf.py rental         # Renting-an-Apartment-in-Japan.pdf を出力
+python tools/make_pdf.py movein         # Moving-In-Utilities-and-Setup-in-Japan.pdf を出力
 ```
 
 - Google Fonts（Fraunces、Inter、Noto Sans JP、Noto Serif JP）を読み込むため、ネットワークが必要。
@@ -103,5 +107,5 @@ python tools/make_pins.py    # marketing/pins/pin_*.png
 
 ## 11. 次の商品
 
-- 第2弾「Moving In: Utilities & Setup in Japan」（`moving-in-guide-outline.md`）。
+- 第2弾「Moving In: Utilities & Setup in Japan」: 本文とPDF（24ページ）、表紙を作成済み。Payhipへの登録は、非公開から始める。
 - 候補: 医療・保険、銀行と携帯、税金・年金、賃貸＋入居のセット。

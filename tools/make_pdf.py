@@ -1,12 +1,14 @@
 import re, sys, markdown, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from art import *  # noqa
 import iso
-import figs2
-FIGS = {0: figs2.flow(), 1: plan_1k_iso() + figs2.whois() + __import__("art")._minis(), 2: figs2.costs(), 3: figs2.doccards(), 4: figs2.maisoku(), 7: figs2.timeline(), 8: figs2.lease_timeline()}
+import guides
+
+GUIDE = sys.argv[1] if len(sys.argv) > 1 else "rental"
+CFG = guides.CONFIGS[GUIDE]()
+FIGS, TITLES, SUMMARY, TILES, CALLOUT = CFG["figs"], CFG["titles"], CFG["summary"], CFG["tiles"], CFG["callout"]
 
 root = pathlib.Path("E:/foreigner-note")
-md = (root / "rental-guide-en.md").read_text(encoding="utf-8")
+md = (root / CFG["md"]).read_text(encoding="utf-8")
 md = re.sub(r"^(☐ .*)$", lambda m: "\n<div class='ck'>" + m.group(1) + "</div>\n", md, flags=re.M)
 _l = md.split("\n"); _o = []
 LI = r"^> (- |\d+\. )"
@@ -18,42 +20,6 @@ for i, ln in enumerate(_l):
     _o.append(ln)
 md = "\n".join(_o)
 body = markdown.markdown(md, extensions=["tables", "sane_lists"])
-
-TITLES = {0: "Quick Start", 1: "How Renting Works in Japan", 2: "Know Your Costs", 3: "Can a Foreigner Rent?",
-          4: "Finding a Place", 5: "Viewing and Applying", 6: "The Contract", 7: "Move-in",
-          8: "Living and Moving Out", 9: "FAQ and Red Flags"}
-SUMMARY = {
-    0: "The 8-step process, how long it takes, and the typical upfront cost.",
-    1: "Who is who, how to read floor plans, building types, and the two kinds of leases.",
-    2: "Every initial cost, monthly costs, and ways to lower the total.",
-    3: "Whether you can rent, the documents you need, and what to do if you are rejected.",
-    4: "Where to search, how to set priorities, and how to read a listing sheet.",
-    5: "What to check at a viewing, how applying works, and what screening involves.",
-    6: "The explanation of important matters and the clauses to read before signing.",
-    7: "Utilities, address registration, garbage rules, and the first weeks.",
-    8: "Renewal, giving notice, move-out costs, and getting your deposit back.",
-    9: "Common questions and the warning signs to watch for.",
-}
-TILES = {
-    0: [("3-6", "weeks", "first inquiry to keys"), ("4-6×", "rent", "typical upfront cost"), ("8", "steps", "from budget to keys")],
-    1: [("20-25", "㎡", "a typical 1K"), ("2", "years", "usual lease term"), ("1981", "", "newer quake standard")],
-    2: [("4-6×", "rent", "typical upfront cost"), ("1", "month + tax", "agency fee cap"), ("0-2", "months", "key money range")],
-    3: [("Yes", "", "foreigners can rent"), ("2-7", "days", "typical screening"), ("1+", "year", "visa left is safer")],
-    4: [("80", "m = 1 min", "station walk rule"), ("3", "priorities", "pick your top three"), ("1981", "", "ask building year")],
-    5: [("3-4", "properties", "per viewing day"), ("2-7", "days", "screening time"), ("In writing", "", "refund of holding fee")],
-    6: [("1", "month", "usual notice (sometimes 2)"), ("2", "years", "usual lease term"), ("Read", "first", "the special terms")],
-    7: [("14", "days", "address registration"), ("2+", "weeks", "book gas in busy season"), ("1-4", "weeks", "internet installation")],
-    8: [("2-4", "months", "renewal papers arrive"), ("1", "month", "usual notice to leave"), ("明細", "", "ask for an itemized bill")],
-    9: [("6", "red flags", "to watch for"), ("5", "FAQs", "answered"), ("7", "days", "refund window")],
-}
-CALLOUT = {
-    2: ("warn", "Ask for a full written breakdown", "Ask what every line is for before you apply. Be careful with vague items such as &quot;support packages&quot; or &quot;cleaning fees&quot;."),
-    3: ("tip", "Use the right agency", "Start with agencies that say they accept foreign customers. It saves weeks of rejected inquiries."),
-    5: ("warn", "Do not pay large sums at the application stage", "If a small holding fee is requested, ask whether it is refundable and get that in writing."),
-    6: ("tip", "Photograph everything on key day", "Take photos of every scratch and stain and email them to the management company. This protects your deposit later."),
-    8: ("tip", "Ask for an itemized bill", "If the move-out charge seems too high, ask for a detailed breakdown (明細) and compare it with the official guideline."),
-}
-
 
 TONE = {"#BFD4EA": "#24426F", "#fff": "#CFDBEC", "#FFF": "#CFDBEC", "#1F3A5F": "#0E1D33", "#2E8B8B": "#5C8DB3",
         "#E8B04A": "#D9B26B", "#2D4F7D": "#1B3459", "#C8372D": "#D2452F"}
@@ -67,9 +33,11 @@ def tone(svgstr):
 
 def opener(n):
     tiles = "".join(f"<div class='tile'><div class='tn'>{a}<span>{b}</span></div><div class='tl'>{c}</div></div>" for a, b, c in TILES[n])
+    scn = CFG["scene_map"].get(n, n)
+    art_svg = iso.scene(scn, CFG["tags"][n]) if n in CFG["tags"] else iso.scene(scn)
     return (f"<section class='opener'><div class='obig'>{n}</div><div class='olabel'>CHAPTER {n}</div>"
             f"<h2 class='otitle'>{TITLES[n]}</h2><div class='osum'>{SUMMARY[n]}</div>"
-            f"<div class='oart'>{iso.scene(n)}</div><div class='tiles'>{tiles}</div></section>")
+            f"<div class='oart'>{art_svg}</div><div class='tiles'>{tiles}</div></section>")
 
 
 def chapter_block(chunk):
@@ -99,11 +67,11 @@ for c in chunks:
     c = c.replace("<h2>Appendices</h2>", "<h2 class='aps'>Appendices</h2>")
     out_chunks.append(c)
 
-TOC = "".join(f"<li><b>{i}</b> {TITLES[i]}</li>" for i in range(10)) + "<li><b>A-H</b> Appendices: calculator, glossary, email templates, checklists, phrases, resources</li>"
-cover = (f"<section class='cover'><div class='ctag'>PRACTICAL GUIDE · 2026</div><h1>Renting an<br>Apartment<br>in Japan</h1>"
-         f"<div class='csub'>Costs, contracts, email templates and move-in steps for foreigners</div>"
+TOC = "".join(f"<li><b>{i}</b> {TITLES[i]}</li>" for i in range(CFG["n_ch"])) + f"<li><b>A-{CFG['ap_last']}</b> {CFG['toc_extra']}</li>"
+cover = (f"<section class='cover'><div class='ctag'>PRACTICAL GUIDE · 2026</div><h1>{CFG['cover_title']}</h1>"
+         f"<div class='csub'>{CFG['cover_sub']}</div>"
          f"<div class='cart'>{iso.cover_art()}</div>"
-         f"<div class='cbadges'><span>PDF GUIDE</span><span>EXCEL CALCULATOR</span><span>6 EMAIL TEMPLATES</span></div>"
+         f"<div class='cbadges'>{''.join('<span>' + b + '</span>' for b in CFG['badges'])}</div>"
          f"<div class='cfoot'>Japan Living Notes</div></section>")
 intro = f"<section class='intro'><h2 class='aps'>Contents</h2><ol class='toc'>{TOC}</ol>{pre}{front}</section>"
 body = cover + intro + "".join(out_chunks)
@@ -165,9 +133,9 @@ hr { border:0; border-top:.5pt solid #cfcabd; margin:14pt 0; }
 .callout .ctype { font-size:7pt; letter-spacing:2pt; font-weight:800; color:var(--navy); padding-top:2pt; width:44pt; flex:none; } .callout.warn .ctype { color:var(--red); }
 """
 html = f"<!doctype html><html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap' rel='stylesheet'><style>{css}</style></head><body>{body}</body></html>"
-tmp = root / "tools" / "guide.html"
+tmp = root / "tools" / f"guide-{GUIDE}.html"
 tmp.write_text(html, encoding="utf-8")
-out = root / "Renting-an-Apartment-in-Japan.pdf"
+out = root / CFG["out"]
 
 from playwright.sync_api import sync_playwright
 with sync_playwright() as p:

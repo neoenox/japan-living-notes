@@ -139,7 +139,7 @@ def sign(I, x, y, n, c=RED):
 
 
 # --------------- chapter dioramas ---------------
-def scene(n):
+def scene(n, tag="14 DAYS"):
     I = Iso(0.92, 320, 112)
     platform(I)
     if n == 0:   # road to a new home
@@ -222,7 +222,7 @@ def scene(n):
         I.add(340, I.shadow(30, 190, 110, 56) + I.box(30, 190, 0, 110, 56, 20, "#3E6FA3") + I.box(30, 190, 20, 110, 14, 30, "#34608F") + I.box(30, 190, 20, 14, 56, 14, "#34608F") + I.box(126, 190, 20, 14, 56, 14, "#34608F"))
         I.add(420, I.cyl(250, 230, 0, 14, 22, "#C98F5B") + I.sphere(250, 230, 42, 18, GREEN) + I.sphere(262, 236, 36, 13, "#5f9f77") + I.sphere(240, 238, 34, 12, GREEN))
         px, py = I.P(190, 112, 70)
-        I.add(900, f'<rect x="{px-48:.1f}" y="{py-26:.1f}" width="96" height="40" rx="8" fill="{RED}" stroke="#fff" stroke-width="2.5"/><text x="{px:.1f}" y="{py+1:.1f}" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">14 DAYS</text>')
+        I.add(900, f'<rect x="{px-48:.1f}" y="{py-26:.1f}" width="96" height="40" rx="8" fill="{RED}" stroke="#fff" stroke-width="2.5"/><text x="{px:.1f}" y="{py+1:.1f}" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">{tag}</text>')
     elif n == 8:  # calendar + envelope + keys
         I.add(100, I.shadow(30, 40, 200, 20) + I.box(30, 40, 0, 200, 14, 150, "#FFFFFF") + I.box(30, 40, 112, 200, 14, 38, RED))
         s = I.text_left(48, 54.2, 124, "MOVE-OUT", 14, "#fff")
@@ -234,6 +234,28 @@ def scene(n):
         I.add(110, s)
         I.add(300, I.shadow(70, 150, 130, 90, .2) + I.box(70, 150, 0, 130, 90, 3, "#FFFFFF") + I.poly([I.P(70, 150, 3.1), I.P(200, 150, 3.1), I.P(135, 195, 3.1)], "#E4E9F2", "#9aa5b5"))
         I.add(310, I.cyl(235, 215, 0, 12, 4, GOLD) + I.ell(235, 215, 4.4, 5, "#A9C2E0") + I.box(220, 200, 0, 10, 40, 4, GOLD))
+    elif n == 10:  # utilities: lamp, tap, burner, router
+        LAMP, WATER, FLAME = "#F6D56A", "#7FB6E8", "#F29A3A"
+        I.add(200, I.shadow(40, 40, 50, 50, .2) + I.cyl(66, 66, 0, 18, 6, GREY) + I.cyl(66, 66, 6, 4, 34, GREY) + I.sphere(66, 66, 56, 19, LAMP))
+        I.add(201, I.text_floor(66, 110, .5, "電気", 12, "#232C3A", 800))
+        I.add(260, I.shadow(130, 40, 90, 70) + I.box(130, 40, 0, 90, 70, 26, "#FFFFFF") + I.ell(175, 78, 26.4, 22, "#C9D6E6")
+              + I.cyl(210, 56, 26, 4, 30, GREY) + I.box(176, 52, 54, 36, 7, 6, GREY) + I.sphere(178, 56, 40, 4, WATER))
+        I.add(261, I.text_floor(175, 126, .5, "水道", 12, "#232C3A", 800))
+        I.add(320, I.shadow(40, 170, 90, 70) + I.box(40, 170, 0, 90, 70, 24, "#2C3647") + I.ell(70, 205, 24.4, 17, "#14181f") + I.ell(105, 205, 24.4, 13, "#14181f")
+              + I.sphere(70, 205, 32, 8, FLAME) + I.sphere(70, 205, 36, 5, "#FFD27A") + I.sphere(105, 205, 31, 6, FLAME))
+        I.add(321, I.text_floor(85, 252, .5, "ガス", 12, "#232C3A", 800))
+        I.add(380, I.shadow(170, 170, 100, 60) + I.box(170, 170, 0, 100, 60, 12, "#FFFFFF") + I.box(180, 232, 3, 80, 3, 5, "#9DB6D4")
+              + I.cyl(186, 182, 12, 3, 38, GREY) + I.cyl(254, 182, 12, 3, 38, GREY) + I.box(200, 200, 12, 8, 4, 2, GREEN) + I.box(214, 200, 12, 8, 4, 2, GREEN))
+        wx, wy = I.P(220, 200, 74)
+        I.add(381, "".join(f'<path d="M{wx-r:.1f} {wy:.1f} a{r} {r} 0 0 1 {2*r} 0" fill="none" stroke="#2C4F7D" stroke-width="5" stroke-linecap="round"/>' for r in (14, 26, 38)))
+        I.add(382, I.text_floor(220, 252, .5, "Wi-Fi", 12, "#232C3A", 800))
+    elif n == 11:  # garbage: bins, bags, schedule board
+        for (x, y, c, lid) in [(50, 60, "#6FAE82", "#4f9366"), (120, 60, "#6F9BD1", "#4f7fb8"), (190, 60, "#E3B866", "#c99a3e")]:
+            I.add(x + y + 20, I.shadow(x - 24, y - 24, 48, 48, .2) + I.cyl(x, y, 0, 24, 54, c) + I.ell(x, y, 54.4, 25, lid))
+        for (x, y) in [(60, 170), (100, 190), (150, 175)]:
+            I.add(x + y + 25, I.shadow(x - 18, y - 18, 36, 36, .18) + I.sphere(x, y, 20, 20, "#F3F5F9" if x != 100 else "#3A3F4B") + I.box(x - 4, y - 4, 38, 8, 8, 5, "#C3CBDA"))
+        I.add(600, I.shadow(210, 160, 70, 20) + I.cyl(220, 190, 0, 3, 70, "#8892a3") + I.cyl(260, 190, 0, 3, 70, "#8892a3") + I.box(214, 186, 50, 52, 8, 44, "#FFFFFF"))
+        I.add(601, I.wl(194.2, 218, 254, 54, 92, "#FFFFFF") + I.text_left(236, 194.4, 78, "燃える", 12, "#2f6b45", 800, "middle") + I.text_left(236, 194.4, 62, "月・木", 11, "#232C3A", 800, "middle"))
     else:        # FAQ: question plaque + warning sign
         I.add(100, I.shadow(50, 60, 150, 20) + I.box(50, 60, 0, 150, 16, 150, "#1F3A5F"))
         I.add(101, I.text_left(125, 76.2, 38, "?", 150, "#fff", 800, "middle"))

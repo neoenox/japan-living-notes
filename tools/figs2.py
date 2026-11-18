@@ -169,3 +169,50 @@ def lease_timeline():
         for j, ln in enumerate(lines):
             o += tx(x, 146 + j * 17, ln, 12.5, GREY, 500)
     return fig("From lease start to deposit return", svg(700, 200, o))
+
+
+# ---------------- generic figures for other guides ----------------
+def columns(title, cols, caption=""):
+    o = ""
+    n = len(cols)
+    w = (700 - 28 - (n - 1) * 14) / n
+    rows = max(len(c[1]) for c in cols)
+    for i, (t, items, c) in enumerate(cols):
+        x = 14 + i * (w + 14)
+        o += card(x, 10, w, 52, c, 14, 7) + tx(x + w / 2, 42, t, 15, "#fff", 800)
+        for j, it in enumerate(items):
+            y = 82 + j * 44
+            o += card(x, y, w, 34, "#fff", 9, 4)
+            o += f'<rect x="{x+8}" y="{y+9}" width="16" height="16" rx="4" fill="#fff" stroke="{c}" stroke-width="3"/>' + tx(x + 30, y + 23, it, 12, INK, 600, "start")
+    return fig(title, svg(700, 90 + rows * 44, o), caption)
+
+
+def presence(title, rows, caption=""):
+    o = ""
+    for i, (a, jp, note, home) in enumerate(rows):
+        r, c = divmod(i, 2)
+        x, y = 14 + c * 346, 12 + r * 110
+        col = RED if home else TEAL
+        o += card(x, y, 330, 92, "#fff", 16, 7)
+        o += f'<rect x="{x+14}" y="{y+16}" width="64" height="64" rx="16" fill="{adj(col, .7)}"/><rect x="{x+14}" y="{y+12}" width="64" height="64" rx="16" fill="{col}"/>'
+        o += tx(x + 46, y + 52, jp, 20, "#fff", 800)
+        o += tx(x + 94, y + 34, a, 17, NAVY, 800, "start") + tx(x + 94, y + 54, note, 12.5, GREY, 500, "start")
+        badge = "You must be home" if home else "No visit needed"
+        bw = len(badge) * 6.6 + 16
+        o += f'<rect x="{x+94}" y="{y+62}" width="{bw}" height="20" rx="10" fill="{col}"/>' + tx(x + 94 + bw / 2, y + 76, badge, 11.5, "#fff", 700)
+    n = (len(rows) + 1) // 2
+    return fig(title, svg(700, 30 + n * 110, o), caption)
+
+
+def bring(title, items, caption=""):
+    o = ""
+    for i, (ic, t, sub) in enumerate(items):
+        r, c = divmod(i, 3)
+        x, y = 14 + c * 230, 12 + r * 128
+        col = [NAVY, RED, TEAL][i % 3]
+        o += card(x, y, 212, 112, "#fff", 16, 8)
+        o += f'<rect x="{x+78}" y="{y+14}" width="56" height="56" rx="14" fill="{adj(col, .7)}"/><rect x="{x+78}" y="{y+10}" width="56" height="56" rx="14" fill="{col}"/>'
+        o += glyph(ic, x + 86, y + 18, 40, "#fff")
+        o += tx(x + 106, y + 90, t, 15, NAVY, 800) + tx(x + 106, y + 106, sub, 12, GREY, 500)
+    n = (len(items) + 2) // 3
+    return fig(title, svg(700, 30 + n * 128, o), caption)
