@@ -4,6 +4,7 @@
 
 - 第1弾: "Renting an Apartment in Japan"（37ページ、$9、Excel計算シート付き）
 - 作業手順: [docs/WORKFLOW.md](docs/WORKFLOW.md)
+- 仕組み（PDFと画像ができるまで）: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - 販売ページの文面: [sales-page-en.md](sales-page-en.md)
 - 集客用の文面: [marketing/posting-kit.md](marketing/posting-kit.md)
 - 第2弾の構成案: [moving-in-guide-outline.md](moving-in-guide-outline.md)
