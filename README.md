@@ -7,6 +7,7 @@
 - 仕組み（PDFと画像ができるまで）: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - 販売ページの文面: [sales-page-en.md](sales-page-en.md)
 - 集客用の文面: [marketing/posting-kit.md](marketing/posting-kit.md)
+- Pinterest 6日間の投稿計画: [marketing/pinterest-schedule.md](marketing/pinterest-schedule.md)
 - 第2弾の構成案: [moving-in-guide-outline.md](moving-in-guide-outline.md)
 
 ## 再生成
