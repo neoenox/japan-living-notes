@@ -16,6 +16,13 @@ from PIL import Image
 
 BAD = [r"\bdraft\b", r"\bTODO\b", r"\[Add ", r"lorem ipsum", r"\bXXX\b"]
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+THIN_CHARS = 250
+
+
+def is_chapter_opener(page_text):
+    """Chapter cover pages are deliberately short: a letter-spaced
+    'C H A P T E R n' line, a title and one sentence. They are not empty."""
+    return re.match(r"^\d*CHAPTER\d", re.sub(r"\s+", "", page_text), flags=re.I) is not None
 
 
 def http_status(url):
@@ -41,17 +48,26 @@ def main():
     if expected and len(doc) != expected:
         print(f"  NG: expected {expected} pages"); ok = False
 
-    text = "\n".join(p.get_text() for p in doc)
+    text = "\n".join(str(p.get_text()) for p in doc)
     for pat in BAD:
         for m in re.finditer(pat, text, flags=re.I):
             ctx = text[max(0, m.start() - 30): m.end() + 30].replace("\n", " ")
             print(f"  NG: found '{m.group(0)}' ... {ctx}"); ok = False
 
-    for i, page in enumerate(doc, 1):
-        page_text = " ".join(page.get_text().split())
-        if len(page_text) < 250 and len(page.get_drawings()) < 10:
-            print(f"  NG: page {i} is nearly empty ({len(page_text)} characters)")
-            ok = False
+    skipped_thin = 0
+    for idx in range(len(doc)):
+        i = idx + 1
+        page = doc.load_page(idx)
+        page_text = " ".join(str(page.get_text()).split())
+        if len(page_text) >= THIN_CHARS or len(page.get_drawings()) >= 10:
+            continue
+        if i == 1 or is_chapter_opener(page_text):
+            skipped_thin += 1
+            continue
+        print(f"  NG: page {i} is nearly empty ({len(page_text)} characters, {len(page.get_drawings())} drawings)")
+        ok = False
+    if skipped_thin:
+        print(f"  OK: {skipped_thin} short page(s) are cover/chapter openers (expected)")
 
     urls = set(re.findall(r"https?://[^\s)>\]]+", text))
     for p in doc:
@@ -69,7 +85,7 @@ def main():
     ims = []
     for p in doc:
         pm = p.get_pixmap(dpi=45)
-        ims.append(Image.frombytes("RGB", [pm.width, pm.height], pm.samples))
+        ims.append(Image.frombytes("RGB", (pm.width, pm.height), pm.samples))
     w, h = ims[0].size
     cols = 8
     rows = (len(ims) + cols - 1) // cols

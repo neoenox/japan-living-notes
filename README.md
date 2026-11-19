@@ -11,6 +11,7 @@
 - 集客用の文面: [marketing/posting-kit.md](marketing/posting-kit.md)
 - Pinterest 6日間の投稿計画: [marketing/pinterest-schedule.md](marketing/pinterest-schedule.md)
 - 公開状態の基準記録: [marketing/launch-baseline-2026-11-18.md](marketing/launch-baseline-2026-11-18.md)
+- YouTubeを見送った判断と再検討の条件: [docs/monitor-youtube-decision.md](docs/monitor-youtube-decision.md)
 - 配布物の記録（版・ページ数・SHA256）: [docs/releases.md](docs/releases.md)
 - 次にやること: [docs/TODO.md](docs/TODO.md)
 - 第2弾の構成案: [moving-in-guide-outline.md](moving-in-guide-outline.md)
