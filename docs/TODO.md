@@ -31,3 +31,11 @@
 ## 第3弾の候補
 
 - [ ] 医療・保険 / 銀行と携帯 / 税金・年金 / 賃貸＋入居のセット販売
+
+## 予約済みの監視（Muse）
+
+- 2026-11-20 10:00 JST 以降に、Day 2のピン `foreigners` の宛先をログインなしで確認するタスクを Muse のサイドチャットに登録した（2026-11-19 登録）。
+  - 見るもの: 公開ボード `https://www.pinterest.com/japanlivingnotes/japan-apartment-guide/` のピン "How foreigners can rent an apartment in Japan"（ローカルの `marketing/pins/pin_foreigners.png`）。詳細URL `https://www.pinterest.com/pin/<id>/` をログインなしで取得し、HTTP 200・タイトル・宛先 `payhip.com/b/4ak8D`（utm付き可）を確認する。
+  - 条件（どれか成立した時だけ報告）: (1) ピンが公開され、ログインなしで詳細が読めた; (2) 詳細ページの「サイトにアクセス」href が `payhip.com/b/4ak8D` でない、または見つからない; (3) 11/20 12:00 JST までに公開されない。
+  - 報告の形: 日時・確認方法（ログインなし／どのURL）・ピンID・宛先の結果を3行以内。プラン・提案・下書きは書かない。未達・数字が取れないときは通知せず静かに終了する。
+  - 結果が戻ったら `docs/schedule.md:23` の状態列に日時と方法を追記。`foreigners` の宛先は2026-11-18にログイン済み画面で確認済み（`marketing/launch-baseline-2026-11-18.md:35`）なので、今回は独立再確認。
