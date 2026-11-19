@@ -327,13 +327,13 @@ def mini(kind):
     if kind == "1R":
         bed(150, 20); sofa(30, 150, 90); table(40, 90); counter(30, 8, 90); tv(160, 175)
     elif kind == "1DK":
-        bed(20, 20); closet(20, 8 if False else 160, 90); desk(110, 10)
+        bed(20, 20); closet(20, 160, 90); desk(110, 10)
         counter(158, 8, 100); fridge(226, 40); table(180, 110, 60, 44)
     elif kind == "1LDK":
         bed(14, 20); closet(14, 160, 80)
         counter(116, 8, 110); fridge(262, 10); table(150, 70, 70, 44); sofa(150, 140, 100); tv(180, 190)
     else:
-        bed(10, 14); bed(104, 14 if False else 14); closet(10, 150, 70); desk(110, 150 - 2 if False else 120)
+        bed(10, 14); bed(104, 14); closet(10, 150, 70); desk(110, 120)
         counter(196, 8, 110); fridge(322, 10); table(220, 70, 70, 44); sofa(220, 130, 100)
     return svgwrap(320, 240, I.out())
 

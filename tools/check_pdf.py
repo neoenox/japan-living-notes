@@ -70,10 +70,10 @@ def main():
         print(f"  OK: {skipped_thin} short page(s) are cover/chapter openers (expected)")
 
     urls = set(re.findall(r"https?://[^\s)>\]]+", text))
-    for p in doc:
-        for l in p.get_links():
-            if l.get("uri"):
-                urls.add(l["uri"])
+    for page in doc:
+        for link in page.get_links():
+            if link.get("uri"):
+                urls.add(link["uri"])
     for u in sorted(urls):
         st = http_status(u)
         good = st == 200
@@ -83,8 +83,8 @@ def main():
     out = ROOT / "tools" / "pv-check"
     out.mkdir(exist_ok=True)
     ims = []
-    for p in doc:
-        pm = p.get_pixmap(dpi=45)
+    for page in doc:
+        pm = page.get_pixmap(dpi=45)
         ims.append(Image.frombytes("RGB", (pm.width, pm.height), pm.samples))
     w, h = ims[0].size
     cols = 8

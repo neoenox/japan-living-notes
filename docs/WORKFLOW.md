@@ -24,10 +24,12 @@
 | `moving-in-guide-en.md` | 第2弾の英語本文 |
 | `sales-page-movein-en.md` | 第2弾の販売ページ文面 |
 | `tools/iso.py` | 立体イラストの描画（表紙、章の扉、間取り） |
-| `tools/art.py`, `tools/figs2.py` | 本文の図（流れ、関係者、費用、書類、マイソク、タイムライン） |
+| `tools/figs2.py` | 本文の図（流れ、関係者、費用、書類、マイソク、タイムライン） |
+| `tools/art.py` | 1Kの立体断面図とSVGの共通部品 |
 | `tools/make_calc.py` | Excel初期費用計算シート（`initial-cost-calculator.xlsx`） |
 | `tools/check_pdf.py` | アップロード前の自動チェック（ページ数、残った語、URL、全ページの一覧画像） |
-| `tools/make_cover.py` | Payhip用の表紙画像（`cover.png`、1600×1000） |
+| `tools/make_cover.py`, `tools/make_cover_movein.py` | Payhip用の表紙画像（`cover.png`、`cover-movein.png`、1600×1000） |
+| `tools/cover.py` | 表紙画像の共通描画処理（`make_cover.py` / `make_cover_movein.py` から利用） |
 | `tools/make_pins.py` | Pinterest用ピン画像（`marketing/pins/`、1000×1500） |
 | `sales-page-en.md` | 販売ページの文面、公開前チェック |
 | `marketing/posting-kit.md` | Pinterest・Reddit・ブログの下書き |

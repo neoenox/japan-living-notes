@@ -1,6 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter as L
+import pathlib
 
 wb = Workbook(); ws = wb.active; ws.title = "Calculator"
 hdr = PatternFill("solid", fgColor="1F3A5F"); inp = PatternFill("solid", fgColor="FFF8DC")
@@ -67,29 +68,29 @@ for row in rows:
                 x.border = bd
     r += 1
 
-P = pos
 for c in cols:
-    k = L(c); g = lambda n: f"{k}{P[n]}"
+    letter = L(c)
+    ref = lambda n: f"{letter}{pos[n]}"
     f = {
-     "c_first": f"={g('rent')}+{g('mgmt')}",
-     "c_dep": f"={g('rent')}*{g('dep_m')}",
-     "c_key": f"={g('rent')}*{g('key_m')}",
-     "c_ag": f"={g('rent')}*{g('ag_m')}*(1+$B$4)",
-     "c_gu": f"=({g('rent')}+{g('mgmt')})*{g('gu_p')}",
-     "c_ins": f"={g('ins')}",
-     "c_keyx": f"={g('keyx')}",
-     "c_other": f"={g('other')}",
-     "c_free": f"=-{g('rent')}*{g('free_m')}",
-     "TOTAL": f"=SUM({k}{P['c_first']}:{k}{P['c_free']})",
-     "mult": f'=IF({g("rent")}>0,{g("TOTAL")}/{g("rent")},"")',
-     "month": f"={g('rent')}+{g('mgmt')}",
-     "y2": f"={g('TOTAL')}+{g('month')}*23+{g('rent')}*{g('ren_m')}",
-     "y2m": f"={g('y2')}/24",
+     "c_first": f"={ref('rent')}+{ref('mgmt')}",
+     "c_dep": f"={ref('rent')}*{ref('dep_m')}",
+     "c_key": f"={ref('rent')}*{ref('key_m')}",
+     "c_ag": f"={ref('rent')}*{ref('ag_m')}*(1+$B$4)",
+     "c_gu": f"=({ref('rent')}+{ref('mgmt')})*{ref('gu_p')}",
+     "c_ins": f"={ref('ins')}",
+     "c_keyx": f"={ref('keyx')}",
+     "c_other": f"={ref('other')}",
+     "c_free": f"=-{ref('rent')}*{ref('free_m')}",
+     "TOTAL": f"=SUM({letter}{pos['c_first']}:{letter}{pos['c_free']})",
+     "mult": f'=IF({ref("rent")}>0,{ref("TOTAL")}/{ref("rent")},"")',
+     "month": f"={ref('rent')}+{ref('mgmt')}",
+     "y2": f"={ref('TOTAL')}+{ref('month')}*23+{ref('rent')}*{ref('ren_m')}",
+     "y2m": f"={ref('y2')}/24",
     }
     for n, v in f.items():
-        x = ws.cell(P[n], c, v); x.number_format = "0.0" if n == "mult" else Y; x.border = bd
+        x = ws.cell(pos[n], c, v); x.number_format = "0.0" if n == "mult" else Y; x.border = bd
         if n == "TOTAL": x.fill = tot; x.font = bold
-ws.cell(P["TOTAL"], 1).font = bold; ws.cell(P["TOTAL"], 1).fill = tot
+ws.cell(pos["TOTAL"], 1).font = bold; ws.cell(pos["TOTAL"], 1).fill = tot
 
 ws.column_dimensions["A"].width = 52
 for c in cols: ws.column_dimensions[L(c)].width = 17
@@ -112,5 +113,4 @@ for i,(a,b) in enumerate(ex, 3):
 e.cell(10,1,"TOTAL").font = bold; e.cell(10,2,"=SUM(B3:B9)").number_format = Y; e.cell(10,2).font = bold
 e.cell(11,1,"As multiple of rent"); e.cell(11,2,"=B10/80000").number_format = "0.0"
 e.column_dimensions["A"].width = 40; e.column_dimensions["B"].width = 16
-import pathlib
 wb.save(str(pathlib.Path(__file__).resolve().parent.parent / "initial-cost-calculator.xlsx"))

@@ -1,5 +1,5 @@
 """Dimensional figures that match the isometric illustrations (inline SVG)."""
-from art import NAVY, RED, SAND, GOLD, TEAL, SKY, INK, GREY, svg, fig, icon_inner
+from art import NAVY, RED, SAND, GOLD, TEAL, INK, GREY, svg, fig, icon_inner
 from iso import adj
 
 
@@ -52,8 +52,6 @@ def whois():
         s += tx(x - w / 2 + 58, y + 16, sub, 12.5, "#fff", 500, "start", .92)
         return s
     o = ""
-    for a, b, dash in [((350, 140), (140, 48)), ((350, 140), (140, 232)), ((350, 140), (560, 232)), ((560, 48), (560, 232)), ((560, 48), (140, 48), "6 6")] if False else []:
-        pass
     lines = [((350, 140), (160, 48), ""), ((350, 140), (160, 232), ""), ((350, 140), (540, 232), ""), ((540, 48), (540, 232), ""), ((540, 48), (160, 48), "7 6")]
     for a, b, d in lines:
         o += f'<line x1="{a[0]}" y1="{a[1]+8}" x2="{b[0]}" y2="{b[1]+8}" stroke="#1F3A5F" opacity=".12" stroke-width="7" stroke-linecap="round"/>'
@@ -61,7 +59,7 @@ def whois():
     o += node(350, 140, 230, "YOU", "(tenant)", "pay rent, follow contract", RED, "person")
     o += node(150, 48, 252, "Agency", "不動産会社", "shows homes, paperwork", NAVY, "home")
     o += node(150, 232, 252, "Guarantor co.", "保証会社", "guarantees your rent", TEAL, "shield")
-    o += node(550, 48, 252, "Landlord", "大家", "owns the building", NAVY, "key" if False else "home")
+    o += node(550, 48, 252, "Landlord", "大家", "owns the building", NAVY, "home")
     o += node(550, 232, 252, "Management co.", "管理会社", "repairs, rent, complaints", NAVY, "wrench")
     return fig("Who is who", svg(700, 296, o), "After you move in, you will mostly deal with the management company.")
 

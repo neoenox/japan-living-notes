@@ -1,4 +1,5 @@
 import re, sys, markdown, pathlib
+from playwright.sync_api import sync_playwright
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import iso
 import guides
@@ -11,25 +12,16 @@ CALLOUT_BEFORE = CFG.get("callout_before", {})
 root = pathlib.Path(__file__).resolve().parent.parent
 md = (root / CFG["md"]).read_text(encoding="utf-8")
 md = re.sub(r"^(☐ .*)$", lambda m: "\n<div class='ck'>" + m.group(1) + "</div>\n", md, flags=re.M)
-_l = md.split("\n"); _o = []
+lines = md.split("\n"); out_lines = []
 LI = r"^> (- |\d+\. )"
-for i, ln in enumerate(_l):
-    if re.match(LI, ln) and i and _l[i-1].startswith("> ") and not re.match(LI, _l[i-1]):
-        _o.append(">")
-    if not re.match(LI, ln) and i and re.match(LI, _l[i-1]) and ln.startswith("> "):
-        _o.append(">")
-    _o.append(ln)
-md = "\n".join(_o)
+for i, ln in enumerate(lines):
+    if re.match(LI, ln) and i and lines[i-1].startswith("> ") and not re.match(LI, lines[i-1]):
+        out_lines.append(">")
+    if not re.match(LI, ln) and i and re.match(LI, lines[i-1]) and ln.startswith("> "):
+        out_lines.append(">")
+    out_lines.append(ln)
+md = "\n".join(out_lines)
 body = markdown.markdown(md, extensions=["tables", "sane_lists"])
-
-TONE = {"#BFD4EA": "#24426F", "#fff": "#CFDBEC", "#FFF": "#CFDBEC", "#1F3A5F": "#0E1D33", "#2E8B8B": "#5C8DB3",
-        "#E8B04A": "#D9B26B", "#2D4F7D": "#1B3459", "#C8372D": "#D2452F"}
-
-
-def tone(svgstr):
-    for a, b in TONE.items():
-        svgstr = svgstr.replace(f'"{a}"', f'"{b}"').replace(f"'{a}'", f"'{b}'")
-    return svgstr
 
 
 def opener(n):
@@ -148,7 +140,6 @@ tmp = root / "tools" / f"guide-{GUIDE}.html"
 tmp.write_text(html, encoding="utf-8")
 out = root / CFG["out"]
 
-from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome")
     pg = b.new_page()

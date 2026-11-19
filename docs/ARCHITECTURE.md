@@ -55,20 +55,18 @@
 - `scene(n)` が、章の扉用のミニチュア（番号ごとに1つ）を返す。0〜9は賃貸ガイド用、10（電気・水道・ガス・Wi-Fi）と11（ゴミ箱）はMoving In用。
 - `cover_art()` は表紙の街並み。`mini(kind)` は家具つきの間取り（1R、1DK、1LDK、2LDK）。
 
-## 4. 本文の図（tools/art.py と tools/figs2.py）
+## 4. 本文の図（tools/figs2.py と tools/art.py）
 
-- どちらも、SVGの文字列を作る関数。`fig(題名, SVG, 注釈)` で、枠と見出しをつける。
-- `figs2.py` は、立体感のあるカード（`card`）、番号の球（`ball`）、アイコン（`glyph`）を共通部品として、各図を作る。
+- `figs2.py` が本文の図を作る。立体感のあるカード（`card`）、番号の球（`ball`）、アイコン（`glyph`）を共通部品として使う。
   - 賃貸ガイド用: 流れ、関係者、費用（立体の棒グラフ）、書類、マイソク、入居、解約までの流れ。
   - 汎用: `columns`（日程の列）、`presence`（誰が家にいる必要があるか）、`bring`（持ち物カード）。
-- 1Kの断面図は、`art.py` の `plan_1k_iso()`（等角投影の自前の描画）。
+- `fig(...)`（枠と見出し）とアイコンは `art.py` の共通部品。`plan_1k_iso()` は1Kの立体断面図（等角投影の自前の描画）。
 
 ## 5. 画像（表紙、サンプル、ピン）
 
 | スクリプト | 出力 | 方法 |
 |---|---|---|
-| `tools/make_cover.py` | `cover.png`（1600×1000） | HTML をChromeで開いてスクリーンショット |
-| `tools/make_cover_movein.py` | `cover-movein.png` | 同上、イラストは `scene(10)` |
+| `tools/make_cover.py`, `tools/make_cover_movein.py` | `cover.png`, `cover-movein.png` | `tools/cover.py` の共通レンダラでHTMLをChromeで開いてスクリーンショット |
 | `tools/make_pins.py` | `marketing/pins/*.png`（1000×1500） | HTML（`scene(n)` ＋見出し）をスクリーンショット |
 | `marketing/mk2.py` ほか | `marketing/samples/card_*.png` | PDFの該当ページを高解像度で切り出し、紺の枠に載せる |
 
