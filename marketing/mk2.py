@@ -3,10 +3,14 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 ROOT = pathlib.Path(__file__).resolve().parent
 d = fitz.open(ROOT.parent / 'Renting-an-Apartment-in-Japan.pdf')
-spec=[('whois',6,.06,.64,'A typical 1K, drawn as a cutaway','Know what you are renting before you view it'),
-('emails',33,.03,.50,'Copy-and-paste email templates','Inquiry, viewing, negotiation, application, notice, refund')]
+spec=[('whois',6,.06,.64,'A typical 1K, drawn as a cutaway','Know what you are renting before you view it','ATYPICAL1K'),
+('emails',31,.03,.50,'Copy-and-paste email templates','Inquiry, viewing, negotiation, application, notice, refund','Inquiry about')]
 def b64(im):
     b=io.BytesIO(); im.save(b,'PNG'); return base64.b64encode(b.getvalue()).decode()
+def check_marker(page, marker):
+    text = ''.join(str(page.get_text()).split()).lower()
+    if ''.join(marker.split()).lower() not in text:
+        raise ValueError(f"Sample page marker not found: {marker}")
 css="""*{margin:0;box-sizing:border-box}body{width:1600px;height:1000px;background:#1F3A5F;font-family:Inter,'Noto Sans JP',sans-serif;position:relative;overflow:hidden}
 .t{position:absolute;left:80px;top:50px;color:#fff;font-family:Fraunces,serif;font-weight:800;font-size:58px}
 .s{position:absolute;left:80px;top:128px;color:#b9c8dc;font-size:28px}
@@ -16,8 +20,8 @@ css="""*{margin:0;box-sizing:border-box}body{width:1600px;height:1000px;backgrou
 .f{position:absolute;left:80px;bottom:22px;color:#8aa0bd;font-size:20px}"""
 with sync_playwright() as p:
     br=p.chromium.launch(channel='chrome'); pg=br.new_page(viewport={'width':1600,'height':1000})
-    for k,n,a,bb,t,s in spec:
-        pm=d[n-1].get_pixmap(dpi=200); im=Image.frombytes('RGB',[pm.width,pm.height],pm.samples)
+    for k,n,a,bb,t,s,marker in spec:
+        page=d[n-1]; check_marker(page, marker); pm=page.get_pixmap(dpi=200); im=Image.frombytes('RGB',[pm.width,pm.height],pm.samples)
         w,h=im.size; im=im.crop((int(w*.06),int(h*a),int(w*.94),int(h*bb)))
         html=f"<html><head><meta charset=utf-8><link href='https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Inter:wght@500;700&display=swap' rel=stylesheet><style>{css}</style></head><body><div class=t>{t}</div><div class=s>{s}</div><div class=tag>SAMPLE PAGE</div><div class=p><img src='data:image/png;base64,{b64(im)}'></div><div class=f>Japan Living Notes</div></body></html>"
         pg.set_content(html,wait_until='networkidle'); pg.wait_for_timeout(300)

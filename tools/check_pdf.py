@@ -17,6 +17,8 @@ from PIL import Image
 BAD = [r"\bdraft\b", r"\bTODO\b", r"\[Add ", r"lorem ipsum", r"\bXXX\b"]
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 THIN_CHARS = 250
+THIN_CHARS_WITH_FIGURES = 40
+MIN_EXEMPT_CHARS = 100
 
 
 def is_chapter_opener(page_text):
@@ -41,10 +43,28 @@ def main():
     pdf = pathlib.Path(sys.argv[1])
     if not pdf.is_absolute():
         pdf = ROOT / pdf
-    expected = int(sys.argv[2]) if len(sys.argv) > 2 else None
-    doc = fitz.open(pdf)
+    sheet_path = ROOT / "tools" / "pv-check" / f"{pdf.stem}-sheet.png"
+
+    def fail(msg):
+        if sheet_path.exists():
+            sheet_path.unlink()
+        print(f"  NG: {msg}")
+        print("RESULT: PROBLEMS FOUND (fix before asking the owner)")
+        sys.exit(1)
+
+    try:
+        expected = int(sys.argv[2]) if len(sys.argv) > 2 else None
+    except ValueError:
+        fail(f"invalid expected page count: {sys.argv[2]}")
+    try:
+        doc = fitz.open(pdf)
+        size_kb = pdf.stat().st_size / 1024
+    except Exception as e:  # noqa: BLE001
+        fail(f"cannot read {pdf}: {e}")
+    if not len(doc):
+        fail("PDF has no pages")
     ok = True
-    print(f"File: {pdf.name}  pages: {len(doc)}  size: {pdf.stat().st_size / 1024:.0f} KB")
+    print(f"File: {pdf.name}  pages: {len(doc)}  size: {size_kb:.0f} KB")
     if expected and len(doc) != expected:
         print(f"  NG: expected {expected} pages"); ok = False
 
@@ -59,12 +79,13 @@ def main():
         i = idx + 1
         page = doc.load_page(idx)
         page_text = " ".join(str(page.get_text()).split())
-        if len(page_text) >= THIN_CHARS or len(page.get_drawings()) >= 10:
+        figures = len(page.get_drawings())
+        if len(page_text) >= THIN_CHARS or (len(page_text) >= THIN_CHARS_WITH_FIGURES and figures >= 10):
             continue
-        if i == 1 or is_chapter_opener(page_text):
+        if (i == 1 or is_chapter_opener(page_text)) and len(page_text) >= MIN_EXEMPT_CHARS and figures >= 1:
             skipped_thin += 1
             continue
-        print(f"  NG: page {i} is nearly empty ({len(page_text)} characters, {len(page.get_drawings())} drawings)")
+        print(f"  NG: page {i} is nearly empty ({len(page_text)} characters, {figures} drawings)")
         ok = False
     if skipped_thin:
         print(f"  OK: {skipped_thin} short page(s) are cover/chapter openers (expected)")
@@ -92,7 +113,7 @@ def main():
     sheet = Image.new("RGB", (cols * w, rows * h), "white")
     for i, im in enumerate(ims):
         sheet.paste(im, ((i % cols) * w, (i // cols) * h))
-    sp = out / (pdf.stem + "-sheet.png")
+    sp = sheet_path
     sheet.save(sp)
     print(f"Contact sheet: {sp}")
     print("RESULT:", "ALL CHECKS PASSED (now ask the owner to confirm before uploading)" if ok else "PROBLEMS FOUND (fix before asking the owner)")
