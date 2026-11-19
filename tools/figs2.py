@@ -4,7 +4,7 @@ from iso import adj
 
 
 def card(x, y, w, h, fill="#fff", rx=14, depth=7, edge=None, stroke="#d9d4c7"):
-    e = edge or adj(fill, .72) if fill != "#fff" else "#D3CEC0"
+    e = edge or ("#D3CEC0" if fill == "#fff" else adj(fill, .72))
     s = f'<rect x="{x+2}" y="{y+depth+7}" width="{w}" height="{h}" rx="{rx}" fill="#1F3A5F" opacity=".10"/>'
     s += f'<rect x="{x}" y="{y+depth}" width="{w}" height="{h}" rx="{rx}" fill="{e}"/>'
     s += f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{fill}" stroke="{stroke if fill=="#fff" else "none"}" stroke-width="1.5"/>'

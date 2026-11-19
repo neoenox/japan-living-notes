@@ -1,7 +1,8 @@
-import fitz, base64, io
+import fitz, base64, io, pathlib
 from PIL import Image
 from playwright.sync_api import sync_playwright
-d=fitz.open('../Renting-an-Apartment-in-Japan.pdf')
+ROOT = pathlib.Path(__file__).resolve().parent
+d = fitz.open(ROOT.parent / 'Renting-an-Apartment-in-Japan.pdf')
 spec=[('whois',6,.06,.64,'A typical 1K, drawn as a cutaway','Know what you are renting before you view it'),
 ('emails',33,.03,.50,'Copy-and-paste email templates','Inquiry, viewing, negotiation, application, notice, refund')]
 def b64(im):
@@ -20,8 +21,8 @@ with sync_playwright() as p:
         w,h=im.size; im=im.crop((int(w*.06),int(h*a),int(w*.94),int(h*bb)))
         html=f"<html><head><meta charset=utf-8><link href='https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Inter:wght@500;700&display=swap' rel=stylesheet><style>{css}</style></head><body><div class=t>{t}</div><div class=s>{s}</div><div class=tag>SAMPLE PAGE</div><div class=p><img src='data:image/png;base64,{b64(im)}'></div><div class=f>Japan Living Notes</div></body></html>"
         pg.set_content(html,wait_until='networkidle'); pg.wait_for_timeout(300)
-        pg.screenshot(path=f'samples/card_{k}.png')
+        pg.screenshot(path=str(ROOT / 'samples' / f'card_{k}.png'))
     br.close()
 sh=Image.new('RGB',(1600,500))
-for i,k in enumerate(('whois','emails')): sh.paste(Image.open(f'samples/card_{k}.png').resize((800,500)),(i*800,0))
-sh.save('samples/_cards2.png')
+for i,k in enumerate(('whois','emails')): sh.paste(Image.open(ROOT / 'samples' / f'card_{k}.png').resize((800,500)),(i*800,0))
+sh.save(ROOT / 'samples' / '_cards2.png')
