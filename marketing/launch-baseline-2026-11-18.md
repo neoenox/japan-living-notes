@@ -57,3 +57,10 @@
   - ピンの詳細URL `https://www.pinterest.com/pin/<id>/` を直接開くと、予約中のピンでも「サイトにアクセス」の href を読める。
   - costs（pin `687995280623935762`）: `https://payhip.com/b/4ak8D?utm_source=Pinterest&utm_medium=organic`（Pinterestがutmを付与。宛先は第1弾で正しい）。
   - listing / movein / moveout は未確認のまま。「作成コンテンツ」画面には6件表示されるが、DOMとアクセシビリティツリーに載るピンリンクは3件のみで、3件のピンIDを取得できなかった。**公開後（11/22〜11/24）に公開ピンの詳細ページで確認する**（公開済みなら必要に応じて編集できる）。
+
+### 10:08 追記: Day 1のピンは公開済み
+
+- `https://www.pinterest.com/pin/687995280623935762/` をログインなしで取得して、HTTP 200、ページ内に「Japan apartment initial costs explained」とピンIDを確認した。所有者のログインなしで中身が読めるため、予約ではなく公開済みと判断した。
+- 同じ取得で `payhip.com/b/4ak8D` へのリンクがページ内にあることも確認した。宛先は第1弾。
+- ボード `https://www.pinterest.com/japanlivingnotes/japan-apartment-guide/` も、ログインなしの取得でピンIDを含んでいた（タイトル文字列はJS描画のため取得できない）。
+- 予約6件のうちDay 1だけが公開。残り5件は11/20〜11/24の予定で、listing / movein / moveout の宛先は公開後に確認する。
