@@ -64,3 +64,13 @@
 - 同じ取得で `payhip.com/b/4ak8D` へのリンクがページ内にあることも確認した。宛先は第1弾。
 - ボード `https://www.pinterest.com/japanlivingnotes/japan-apartment-guide/` も、ログインなしの取得でピンIDを含んでいた（タイトル文字列はJS描画のため取得できない）。
 - 予約6件のうちDay 1だけが公開。残り5件は11/20〜11/24の予定で、listing / movein / moveout の宛先は公開後に確認する。
+
+## 中間確認（2026-11-20 12:06 JST、ログインあり）
+
+方法: 利用者の Chrome にログイン済みの Payhip 管理画面を bsk で借用して読み取った（Dashboard と Customers）。Pinterest は下記の理由で未取得。
+
+- Payhip ダッシュボード「Your Products」: `Renting an Apartment in Japan` 3 views / 0 orders / $0.00 sales、`Moving In: Utilities & Setup in Japan` 1 views / 0 orders / $0.00 sales
+- Payhip「Customers」: 0 Orders / "No orders have been made yet"（ナビゲーションのバッジ「1」は注文数ではない）
+- Pinterest インプレッション・保存・アウトボウンドクリック: **未取得**。Analytics ページは借用タブでも本文が描画されず（`visibilityState: hidden`）、API レスポンスも redacted で読めなかった。11/25 に管理画面で取得する。
+
+この中間値をもって Day 7 列を埋めず、11/25 の取得時に改めて記録する。
