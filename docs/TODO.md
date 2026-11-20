@@ -15,11 +15,12 @@
 ## 集客・販売
 
 - [ ] PayhipストアのAbout Me：公開ストアページにはAbout欄が表示されていない。ストアビルダーでセクションを追加するか、追加しないかを決める（文面は `marketing/payhip-store-about.md` に用意済み）
+- [ ] 11/25以降のピン方針（期限11/24）: 判断材料を `docs/post-day7-pins.md` にまとめた。数値は未取得のまま
 - [ ] Pinterestの予約6件のうち、listing / movein / moveout の宛先が `payhip.com/b/4ak8D` か確認する（costs / foreigners / emails は2026-11-18に確認済み。プロフィール画面が自動化で描画されず、残り3件は未確認）
 - [ ] `initial-cost-calculator.xlsx` は、Payhipで配布中のファイルとリポジトリの版でSHA256が違う（サイズは同じ）。次にExcelを触るときに、どちらを正とするか決める
 
 - [ ] PDF内部（付録）に第2弾への導線を入れるか決める（入れるなら再ビルド＋再承認）
-- [ ] ブログ記事 `marketing/blog-initial-costs.md` の公開（公開先を決める。note / 自前 / Medium）
+- [ ] ブログ記事 `marketing/blog-initial-costs.md` の公開（公開先を決める。note / 自前 / Medium。公開前チェックは `docs/blog-publishing-prep.md`）
 - [ ] 拡散対策：Payhipの透かし、購入者識別、価格戦略の見直し（リポジトリの暗号化では防げない領域）
 - [ ] Day 7（11/25）と Day 30 に、Pinterestの表示・保存・アウトバウンドクリックとPayhip購入件数を記録する（`launch-baseline-2026-11-18.md` の表に追記）
 
@@ -32,7 +33,7 @@
 
 ## 第3弾の候補
 
-- [ ] 医療・保険 / 銀行と携帯 / 税金・年金 / 賃貸＋入居のセット販売
+- [ ] 医療・保険 / 銀行と携帯 / 税金・年金 / 賃貸＋入居のセット販売（比較用の構成案は `docs/next-product-outlines.md`。数値・制度は未確認）
 
 ## 予約済みの監視（Muse）
 
