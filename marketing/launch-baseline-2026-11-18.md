@@ -67,10 +67,10 @@
 
 ## 中間確認（2026-11-20 12:06 JST、ログインあり）
 
-方法: 利用者の Chrome にログイン済みの Payhip 管理画面を bsk で借用して読み取った（Dashboard と Customers）。Pinterest は下記の理由で未取得。
+方法: 利用者の Chrome にログイン済みの Payhip 管理画面を bsk で借用して読み取った（Dashboard と Customers）。Pinterest は 2026-11-20 13:54 JST にログイン済みの Analytics オーバービューを借用して読み取った。
 
 - Payhip ダッシュボード「Your Products」: `Renting an Apartment in Japan` 3 views / 0 orders / $0.00 sales、`Moving In: Utilities & Setup in Japan` 1 views / 0 orders / $0.00 sales
 - Payhip「Customers」: 0 Orders / "No orders have been made yet"（ナビゲーションのバッジ「1」は注文数ではない）
-- Pinterest インプレッション・保存・アウトボウンドクリック: **未取得**。Analytics ページは借用タブでも本文が描画されず（`visibilityState: hidden`）、API レスポンスも redacted で読めなかった。11/25 に管理画面で取得する。
+- Pinterest Analytics オーバービュー（2026-11-20 13:54 JST、ログインあり、表示期間 2026/10/21〜2026/11/20 = 過去30日、リアルタイム推定値）: インプレッション 15、エンゲージメント 0、アウトバウンドクリック 0、保存 0、合計オーディエンス／エンゲージしたオーディエンスは「-」。ピン別インプレッション: `costs` 4 と 4（重複2件）、`foreigners` 4、`emails` 3。トップボード「Japan apartment guide」15（ピン5件）。デイリーデータは UTC 記録。
 
 この中間値をもって Day 7 列を埋めず、11/25 の取得時に改めて記録する。
