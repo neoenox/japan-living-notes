@@ -20,7 +20,7 @@
 | 日付 | ピン | 状態 |
 |---|---|---|
 | 11/19(木) | costs | 公開確認済み（10:08、宛先は第1弾） |
-| 11/20(金) | foreigners | これから |
+| 11/20(金) | foreigners | 公開確認済み（10:10 JST、ログインなし／omp のヘッドレス Chromium で詳細URLを直接取得）。詳細 `https://www.pinterest.com/pin/687995280623936667/` は HTTP 200、タイトル "How foreigners can rent an apartment in Japan"、宛先 `payhip.com/b/4ak8D?utm_source=Pinterest&utm_medium=organic`（第1弾） |
 | 11/21(土) | emails | これから |
 | 11/22(日) | listing | これから。**宛先は公開後に確認**（予約中は読めなかった） |
 | 11/23(月) | movein | これから。**宛先は公開後に確認** |
