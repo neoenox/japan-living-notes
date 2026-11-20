@@ -173,6 +173,8 @@ def lease_timeline():
 def columns(title, cols, caption=""):
     o = ""
     n = len(cols)
+    if not n:
+        raise ValueError("columns() needs at least one column")
     w = (700 - 28 - (n - 1) * 14) / n
     rows = max(len(c[1]) for c in cols)
     for i, (t, items, c) in enumerate(cols):

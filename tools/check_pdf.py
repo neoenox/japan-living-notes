@@ -19,6 +19,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 THIN_CHARS = 250
 THIN_CHARS_WITH_FIGURES = 40
 MIN_EXEMPT_CHARS = 100
+MAX_URLS = 20
 
 
 def is_chapter_opener(page_text):
@@ -65,7 +66,9 @@ def main():
         fail("PDF has no pages")
     ok = True
     print(f"File: {pdf.name}  pages: {len(doc)}  size: {size_kb:.0f} KB")
-    if expected and len(doc) != expected:
+    if expected is None:
+        print("  OK: page count not checked (no expected value given)")
+    elif len(doc) != expected:
         print(f"  NG: expected {expected} pages"); ok = False
 
     text = "\n".join(str(p.get_text()) for p in doc)
@@ -91,11 +94,22 @@ def main():
         print(f"  OK: {skipped_thin} short page(s) are cover/chapter openers (expected)")
 
     urls = set(re.findall(r"https?://[^\s)>\]]+", text))
+    skipped = set()
     for page in doc:
         for link in page.get_links():
-            if link.get("uri"):
-                urls.add(link["uri"])
-    for u in sorted(urls):
+            uri = link.get("uri")
+            if not uri:
+                continue
+            if uri.lower().startswith(("http://", "https://")):
+                urls.add(uri)
+            else:
+                skipped.add(uri)
+    for u in sorted(skipped):
+        print(f"  SKIP: {u} (non-http scheme, not checked)")
+    if len(urls) > MAX_URLS:
+        print(f"  NG: {len(urls)} URLs exceed the limit of {MAX_URLS}; not all checked")
+        ok = False
+    for u in sorted(urls)[:MAX_URLS]:
         st = http_status(u)
         good = st == 200
         print(f"  {'OK' if good else 'NG'}: {st} {u}")
@@ -103,20 +117,22 @@ def main():
 
     out = ROOT / "tools" / "pv-check"
     out.mkdir(exist_ok=True)
-    ims = []
-    for page in doc:
-        pm = page.get_pixmap(dpi=45)
-        ims.append(Image.frombytes("RGB", (pm.width, pm.height), pm.samples))
-    w, h = ims[0].size
+    pm = doc.load_page(0).get_pixmap(dpi=45)
+    w, h = pm.width, pm.height
     cols = 8
-    rows = (len(ims) + cols - 1) // cols
+    rows = (len(doc) + cols - 1) // cols
     sheet = Image.new("RGB", (cols * w, rows * h), "white")
-    for i, im in enumerate(ims):
+    for i, page in enumerate(doc):
+        pm = page.get_pixmap(dpi=45)
+        im = Image.frombytes("RGB", (pm.width, pm.height), pm.samples)
         sheet.paste(im, ((i % cols) * w, (i // cols) * h))
     sp = sheet_path
     sheet.save(sp)
     print(f"Contact sheet: {sp}")
-    print("RESULT:", "ALL CHECKS PASSED (now ask the owner to confirm before uploading)" if ok else "PROBLEMS FOUND (fix before asking the owner)")
+    result = "ALL CHECKS PASSED (now ask the owner to confirm before uploading)" if ok else "PROBLEMS FOUND (fix before asking the owner)"
+    if expected is None:
+        result += " (page count not checked)"
+    print("RESULT:", result)
     sys.exit(0 if ok else 1)
 
 

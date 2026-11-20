@@ -1,4 +1,5 @@
 """Illustrations and figures for the guide (inline SVG)."""
+from iso import adj, mini_grid
 NAVY, RED, SAND, GOLD, TEAL, SKY, INK, GREY = "#1F3A5F", "#C8372D", "#F4F1EA", "#E8B04A", "#2E8B8B", "#BFD4EA", "#222", "#666"
 FONT = "font-family=\"'Inter','Noto Sans JP','Yu Gothic',sans-serif\""
 
@@ -49,22 +50,16 @@ def P(x, y, z=0):
     return (_OX + (x - y) * 0.866 * _S, _OY + (x + y) * 0.5 * _S - z * _S)
 
 
-def _adj(hexc, f):
-    h = hexc.lstrip("#")
-    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
-    return "#%02x%02x%02x" % (min(255, int(r * f)), min(255, int(g * f)), min(255, int(b * f)))
-
-
 def poly(pts, fill, stroke="none", sw=1, op=1):
     p = " ".join(f"{a:.1f},{b:.1f}" for a, b in pts)
     return f'<polygon points="{p}" fill="{fill}" stroke="{stroke}" stroke-width="{sw}" stroke-linejoin="round" opacity="{op}"/>'
 
 
 def ibox(x, y, z, w, d, h, c, edge=None):
-    e = edge or _adj(c, 0.62)
-    top = poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], _adj(c, 1.06), e, .6)
-    lf = poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], _adj(c, 0.9), e, .6)
-    rf = poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], _adj(c, 0.74), e, .6)
+    e = edge or adj(c, 0.62)
+    top = poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], adj(c, 1.06), e, .6)
+    lf = poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], adj(c, 0.9), e, .6)
+    rf = poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], adj(c, 0.74), e, .6)
     return lf + rf + top
 
 
@@ -74,7 +69,7 @@ def iflat(x, y, w, d, fill, z=0, stroke="none", sw=1):
 
 def iellipse(cx, cy, z, r, fill):
     pts = [P(cx + r * math.cos(a / 12 * math.tau), cy + r * math.sin(a / 12 * math.tau), z) for a in range(12)]
-    return poly(pts, fill, _adj(fill, .6), .6)
+    return poly(pts, fill, adj(fill, .6), .6)
 
 
 def plan_1k_iso():
@@ -135,10 +130,7 @@ def plan_1k_iso():
     return fig("A typical 1K", svg(680, 540, o), "Cutaway view. Layouts vary, but a 1K is always: one room, a separate kitchen, a unit bath, an entrance, and usually a balcony.")
 
 
-import iso as _iso
-
-
 def _minis():
-    return fig('Other common layouts', _iso.mini_grid(), 'R = room, K = kitchen, D = dining, L = living.')
+    return fig('Other common layouts', mini_grid(), 'R = room, K = kitchen, D = dining, L = living.')
 
 

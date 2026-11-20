@@ -2,8 +2,8 @@
 import math
 
 FONT = "font-family=\"'Inter','Noto Sans JP','Yu Gothic',sans-serif\""
-WHITE, CREAM, WOOD, RED, BLUE, DARK, GREEN, GOLD, KRAFT, GREY = (
-    "#F3F5F9", "#EFE6D2", "#C99A5B", "#D2452F", "#6F9BD1", "#232C3A", "#6FAE82", "#E3B866", "#C9A06A", "#9AA5B5")
+WHITE, CREAM, RED, GREEN, GOLD, KRAFT, GREY = (
+    "#F3F5F9", "#EFE6D2", "#D2452F", "#6FAE82", "#E3B866", "#C9A06A", "#9AA5B5")
 
 
 def adj(hexc, f):
@@ -256,7 +256,7 @@ def scene(n, tag="14 DAYS"):
             I.add(x + y + 25, I.shadow(x - 18, y - 18, 36, 36, .18) + I.sphere(x, y, 20, 20, "#F3F5F9" if x != 100 else "#3A3F4B") + I.box(x - 4, y - 4, 38, 8, 8, 5, "#C3CBDA"))
         I.add(600, I.shadow(210, 160, 70, 20) + I.cyl(220, 190, 0, 3, 70, "#8892a3") + I.cyl(260, 190, 0, 3, 70, "#8892a3") + I.box(214, 186, 50, 52, 8, 44, "#FFFFFF"))
         I.add(601, I.wl(194.2, 218, 254, 54, 92, "#FFFFFF") + I.text_left(236, 194.4, 78, "燃える", 12, "#2f6b45", 800, "middle") + I.text_left(236, 194.4, 62, "月・木", 11, "#232C3A", 800, "middle"))
-    else:        # FAQ: question plaque + warning sign
+    elif n == 9:  # FAQ / "When Something Breaks": question plaque + warning sign
         I.add(100, I.shadow(50, 60, 150, 20) + I.box(50, 60, 0, 150, 16, 150, "#1F3A5F"))
         I.add(101, I.text_left(125, 76.2, 38, "?", 150, "#fff", 800, "middle"))
         I.add(300, I.cyl(235, 170, 0, 3, 90, "#8892a3"))
@@ -264,10 +264,12 @@ def scene(n, tag="14 DAYS"):
         I.add(301, I.poly([P(235 - 38, 171, 86), P(235 + 38, 171, 86), P(235, 171, 152)], GOLD, "#232C3A", 3) + I.text_left(235, 171.2, 98, "!", 40, "#232C3A", 800, "middle"))
         for (x, y) in [(60, 190), (110, 215)]:
             I.add(x + y, I.cyl(x, y, 0, 16, 4, "#3a3f4b") + I.cyl(x, y, 4, 9, 30, RED) + I.cyl(x, y, 20, 10, 5, "#fff"))
+    else:
+        raise ValueError(f"unknown scene: {n}")
     return svgwrap(640, 400, I.out(), '70 0 500 400')
 
 
-def cover_art():
+def cover_art(vb=None):
     I = Iso(0.8, 640, 70)
     I.add(-1000, I.box(0, 0, -16, 460, 300, 16, "#A9C2E0", "#2b4a73"))
     I.add(-990, I.flat(0, 232, 460, 44, "#46505F"))
@@ -280,7 +282,7 @@ def cover_art():
     house(I, 40, 140, 90, 60, "#E7DAC2", "#2C4F7D")
     building(I, 170, 140, 110, 66, 60, "#D9DEE8", 4, 3)
     tree(I, 320, 150, 1.0); tree(I, 370, 170, .9); tree(I, 150, 210, .8); tree(I, 430, 200, 1.0)
-    return svgwrap(1280, 470, I.out(), '410 10 570 460')
+    return svgwrap(1280, 470, I.out(), vb or '410 10 570 460')
 
 
 # --------------- furnished mini rooms (other layouts) ---------------

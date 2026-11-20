@@ -16,14 +16,17 @@ p{margin-top:26px;font-size:30px;line-height:1.4;color:#444}
 .pill{position:absolute;left:56px;bottom:46px;background:#C8372D;color:#fff;font-size:26px;font-weight:700;padding:12px 28px;border-radius:40px}
 .ft{position:absolute;right:56px;bottom:56px;font-size:24px;color:#666}"""
 with sync_playwright() as pw:
-    b=pw.chromium.launch(channel='chrome'); pg=b.new_page(viewport={'width':1000,'height':1500})
-    for k,n,t,s,pill in pins:
-        h=f"<html><head><meta charset=utf-8><link href='https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Inter:wght@500;700&display=swap' rel=stylesheet><style>{css}</style></head><body><div class=top>JAPAN LIVING NOTES</div><div class=art>{iso.scene(n)}</div><div class=card><h1>{t}</h1><p>{s}</p><div class=pill>{pill}</div><div class=ft>Illustrated PDF + Excel</div></div></body></html>"
-        pg.set_content(h,wait_until='networkidle'); pg.wait_for_timeout(300)
-        pg.screenshot(path=str(ROOT / f'marketing/pins/pin_{k}.png'))
-    b.close()
+    b=pw.chromium.launch(channel='chrome')
+    try:
+        pg=b.new_page(viewport={'width':1000,'height':1500})
+        for k,n,t,s,pill in pins:
+            h=f"<html><head><meta charset=utf-8><link href='https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Inter:wght@500;700&display=swap' rel=stylesheet><style>{css}</style></head><body><div class=top>JAPAN LIVING NOTES</div><div class=art>{iso.scene(n)}</div><div class=card><h1>{t}</h1><p>{s}</p><div class=pill>{pill}</div><div class=ft>Illustrated PDF + Excel</div></div></body></html>"
+            pg.set_content(h,wait_until='networkidle'); pg.wait_for_timeout(300)
+            pg.screenshot(path=str(ROOT / f'marketing/pins/pin_{k}.png'))
+    finally:
+        b.close()
 from PIL import Image
 ims=[Image.open(ROOT / f'marketing/pins/pin_{k}.png').resize((333,500)) for k,*_ in pins]
-sh=Image.new('RGB',(333*6,500))
+sh=Image.new('RGB',(333*len(pins),500))
 for i,im in enumerate(ims): sh.paste(im,(i*333,0))
 sh.save(str(ROOT / 'marketing/pins/_sheet.png'))

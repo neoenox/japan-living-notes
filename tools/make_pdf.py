@@ -142,8 +142,10 @@ out = root / CFG["out"]
 
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome")
-    pg = b.new_page()
-    pg.goto(tmp.as_uri(), wait_until='networkidle'); pg.evaluate('document.fonts.ready')
-    pg.pdf(path=str(out), prefer_css_page_size=True, print_background=True, display_header_footer=False,)
-    b.close()
+    try:
+        pg = b.new_page()
+        pg.goto(tmp.as_uri(), wait_until='networkidle'); pg.evaluate('document.fonts.ready')
+        pg.pdf(path=str(out), prefer_css_page_size=True, print_background=True, display_header_footer=False,)
+    finally:
+        b.close()
 print(out)
