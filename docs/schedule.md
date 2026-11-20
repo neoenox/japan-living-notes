@@ -46,7 +46,7 @@
 - Pinterest: インプレッション、保存、アウトバウンドクリック（合計と、ピン別）
 - Payhip: 購入件数、商品ビュー（第1弾・第2弾）
 
-終わったら、次を決める。決めたことは [TODO.md](TODO.md) に結果を書いて消し込む。
+終わったら、次を決める。判断材料は [day7-decisions.md](day7-decisions.md) にまとめた。決めたことは [TODO.md](TODO.md) に結果を書いて消し込む。
 
 1. 11/25以降のピンをどうするか（6枚で終わるため、ここで止めるか、新しく作るか）
 2. PayhipストアのAbout欄を作るか（文面は [marketing/payhip-store-about.md](../marketing/payhip-store-about.md)）
