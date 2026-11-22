@@ -15,6 +15,7 @@
 - YouTubeを見送った判断と再検討の条件: [docs/monitor-youtube-decision.md](docs/monitor-youtube-decision.md)
 - 配布物の記録（版・ページ数・SHA256）: [docs/releases.md](docs/releases.md)
 - 次にやること: [docs/TODO.md](docs/TODO.md)
+- 戦略（2026-11-22 時点の判断の枠組み）: [docs/strategy-2026-11-22.md](docs/strategy-2026-11-22.md)
 - 第2弾の構成案: [moving-in-guide-outline.md](moving-in-guide-outline.md)
 
 ## 再生成
@@ -29,6 +30,7 @@ python tools/make_calc.py   # Excel
 python tools/make_cover.py  # Payhip用の表紙
 python tools/make_cover_movein.py  # 第2弾の表紙
 python tools/make_pins.py   # Pinterest用ピン画像
+python tools/check_pin.py <pin>  # ピンの公開状態と宛先をログインなしで確認（all も可）
 ```
 
 重要: PDFをPayhipに上げる前は、必ず `docs/WORKFLOW.md` の「6a」の確認フロー（自動チェック＋本人の確認）を通す。
