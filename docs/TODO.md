@@ -8,7 +8,8 @@
 - [x] `check_pdf.py` の空ページ判定（本文250字未満かつ図版10未満）は、章扉ページを除外する条件を入れると誤検知が減る（現状は drawings 数で偶然回避している）
   - 2026-11-19 対応: 1ページ目（表紙）と章扉（文字間の空いた `C H A P T E R n` で始まるページ）を判定から除外した。除外件数は1行で報告する。`Renting-an-Apartment-in-Japan.pdf` で章扉10ページが除外され、p27 だけが NG として残ることを確認（p27 は上記の次版対応待ち）
   - 2026-11-19 19:58 JST 対応・確認（ログインなし、ローカル）: 全ソースレビューの Important 4件を修正。`check_pdf.py` は図版ページにも最低40字、表紙/章扉の除外にも最低100字＋図版1個を要求し、読込不能/0ページは `NG`＋`RESULT` を出して終了、古い一覧画像を削除。`mk2.py` の emails サンプルを p33→p31 に直し、whois/emails ともにページ内マーカー不一致で停止。再生成したHTML/PNG/ExcelはHEADと同一、PDFテキストは賃貸が同一（第2弾は既知の p8/p9/p20/p21 drift のみ）、mk2再生成画像はコミット済み画像とバイト一致。2PDFのcheck_pdfは賃貸p27のみNG・第2弾は通過。合成PDF（文字0＋図版12、CHAPTER-only、正当な章扉、0ページ、壊れたPDF）で新ガードの判定と古いシート削除を確認。配布PDF・本文は未変更
-  - 2026-11-20 09:43 JST 対応・確認（ログインなし、ローカル）: 残レビュー提案12件のうち10件を修正。`iso.scene` は9を明示分岐に昇格し未知番号は `ValueError`、`art.py` は `iso.adj` に統一、`make_cover` は viewBox を引数化、`check_pdf` はページ数未指定の明記・非 http(s) の `SKIP`・URL上限20件・一覧画像のストリーム化、`figs2.columns([])` と `make_pins` の枚数をガード、未使用定数と例外時のブラウザ未クローズを解消。#4（networkidle 置換）と #8（`main()`／`__main__` ガード）は Chrome＋Google Fonts の再生成検証が必要なため11/25以降に繰り延べ。編集前後の出力バイト比較（SVG文字列・check_pdf 標準出力と一覧画像）は全項目で一致、新ガードは使い捨てテストで確認。本文・配布PDF・画像は未変更
+  - 2026-11-20 09:43 JST 対応・確認（ログインなし、ローカル）: 残レビュー提案12件のうち10件を修正。`iso.scene` は9を明示分岐に昇格し未知番号は `ValueError`、`art.py` は `iso.adj` に統一、`make_cover` は viewBox を引数化、`check_pdf` はページ数未指定の明記・非 http(s) の `SKIP`・URL上限20件・一覧画像のストリーム化、`figs2.columns([])` と `make_pins` の枚数をガード、未使用定数と例外時のブラウザ未クローズを解消。#4（networkidle 置換）と #8（`main()`／`__main__` ガード）は当時、Chrome＋Google Fonts の再生成検証が必要なため11/25以降に繰り延べたが、下記のとおり 11/21 に実施済み。編集前後の出力バイト比較（SVG文字列・check_pdf 標準出力と一覧画像）は全項目で一致、新ガードは使い捨てテストで確認。本文・配布PDF・画像は未変更
+  - 2026-11-21 00:06 JST 対応・確認（ログインなし、ローカル、コミット `4927906`）: 繰り延べていた #4 と #8 を実施。`wait_until='networkidle'` をフォントの明示待ちに置き換え、`mk2.py` / `make_calc.py` / `make_cover.py` / `make_cover_movein.py` / `make_pdf.py` / `make_pins.py` の副作用を `main()` 配下へ移動。全スクリプトが import 時に書き込まないこと、compile 成功、再生成結果（ピン・表紙PNGはバイト一致、賃貸PDFテキストは同一、第2弾は既知の p8/p9/p20/p21 drift のみ、Excelの値と数式は同一）を確認。配布物はHEADに戻しており未変更
 - [ ] 第2弾の配布PDFと現在の本文が不一致。配布版（24ページ）の p8, p9, p20, p21 にある「Two types: city gas (都市ガス) and propane gas (プロパン, LP gas)...」の段落が、`moving-in-guide-en.md` と再生成HTMLにはない。11/25に、本文に段落を戻すか、削除版で配布し直すかを決める（差し替えるなら再ビルド＋本人承認＋`docs/releases.md` に追記）
   - 2026-11-19 確認: ログインなし。`make_pdf.py movein` でローカル再生成し、Git管理の配布PDFとページごとのテキストを比較して差分4ページを特定。再生成したPDFは元に戻しており、配布物は未変更
 
@@ -16,7 +17,9 @@
 
 - [ ] PayhipストアのAbout Me：公開ストアページにはAbout欄が表示されていない。ストアビルダーでセクションを追加するか、追加しないかを決める（文面は `marketing/payhip-store-about.md` に用意済み）
 - [ ] 11/25以降のピン方針（期限11/24）: 判断材料を `docs/post-day7-pins.md` にまとめた。数値は未取得のまま
-- [ ] Pinterestの予約6件のうち、listing / movein / moveout の宛先が `payhip.com/b/4ak8D` か確認する（costs / foreigners / emails は2026-11-18に確認済み。プロフィール画面が自動化で描画されず、残り3件は未確認）
+- [ ] Pinterestの予約6件のうち、movein / moveout の宛先が `payhip.com/b/4ak8D` か確認する（costs / foreigners / emails / listing は確認済み。残り2件は 11/23〜11/24 の公開後に確認）
+  - 2026-11-22 13:21 JST 確認（ログインなし、詳細URLを直接取得）: listing（ピンID `687995280624005769`）は HTTP 200、タイトル "How to read a Japanese apartment listing"、clickthrough は `payhip.com/b/4ak8D?utm_source=Pinterest&utm_medium=organic`（第1弾）。ピンIDはプロフィールJSONの `image_signature` と `pin_listing.png` の照合で特定。`docs/schedule.md` に記録済み
+  - 2026-11-22 13:23 JST 確認（ログインなし）: movein / moveout はまだ未公開。公開ボード・プロフィールJSON・Pinterest検索のいずれにも画像署名がなく、ピンIDは未取得。宛先は「未取得」のまま。11/23・11/24 の公開後に同じ手順で確認する（`docs/schedule.md` に記録済み）
 - [ ] `initial-cost-calculator.xlsx` は、Payhipで配布中のファイルとリポジトリの版でSHA256が違う（サイズは同じ）。次にExcelを触るときに、どちらを正とするか決める
 
 - [ ] PDF内部（付録）に第2弾への導線を入れるか決める（入れるなら再ビルド＋再承認）
