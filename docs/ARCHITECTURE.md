@@ -73,7 +73,7 @@
 ## 6. フォントとネットワーク
 
 - Fraunces（見出し）、Inter（本文）、Noto Sans JP と Noto Serif JP（日本語）を、Google Fonts から読み込む。
-- PDF作成と画像作成のときは、ネットワークが必要（`wait_until='networkidle'` で読み込み完了を待つ）。
+- PDF作成と画像作成のときは、ネットワークが必要（`wait_until='load'` で読み込み、続けて `document.fonts.ready` でフォントの準備を待つ。2026-11-21 に `networkidle` から置き換えた）
 
 ## 7. ページの作り（CSS）
 

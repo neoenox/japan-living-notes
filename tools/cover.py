@@ -44,7 +44,8 @@ def render(html_name, png_name, art, title, sub, chips):
         b = p.chromium.launch(channel="chrome")
         try:
             pg = b.new_page(viewport={"width": 1600, "height": 1000})
-            pg.goto((HERE / html_name).as_uri(), wait_until="networkidle")
+            pg.goto((HERE / html_name).as_uri(), wait_until="load")
+            pg.evaluate("document.fonts.ready")
             pg.wait_for_timeout(500)
             pg.screenshot(path=str(ROOT / png_name))
         finally:

@@ -20,7 +20,7 @@ You found an apartment you like. The rent is ¥80,000 a month. Then the agency s
 
 ## The one number set by law: the agency fee
 
-The maximum that an agency can receive from the landlord and the tenant **together** is one month of rent plus tax. For housing, the tenant's default share is **half a month plus tax**. You pay up to a full month only if you agreed to it in advance. If a quote shows a full month charged to you and you do not remember agreeing, ask why.
+The maximum that an agency can receive from the landlord and the tenant **together** is one month of rent plus tax. For housing, the tenant's default share is **half a month plus tax**. You pay up to a full month only if you agreed to it in advance. If a quote shows a full month charged to you and you do not remember agreeing, ask why. The amount comes from the ministry's [official notice on brokerage fees](https://www.mlit.go.jp/notice/noticedata/sgml/1970/26197000/26197000.html), issued under [Article 46 of the Real Estate Brokerage Act](https://laws.e-gov.go.jp/law/327AC1000000176).
 
 ## An example: a ¥80,000 apartment
 
@@ -43,7 +43,7 @@ If the agency charged only the default half month for the agency fee, the total 
 
 - **Renewal fee (更新料):** common in some regions, often one month's rent every two years. Not every property has it.
 - **Guarantor renewal fee:** often a small yearly fee.
-- **Move-out costs:** cleaning and repair charges, taken from the deposit.
+- **Move-out costs:** cleaning and repair charges, taken from the deposit. The ministry's [restoration guideline](https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000020.html) says normal wear and aging are included in the rent, not charged to the tenant.
 - **Monthly costs:** compare apartments by **rent plus management fee**, not rent alone.
 
 ## How to lower the initial cost
@@ -67,3 +67,9 @@ The Excel cost calculator in my guide lets you enter your own numbers, compare u
 **Renting an Apartment in Japan** (illustrated PDF + Excel calculator, $9): https://payhip.com/b/4ak8D
 
 *This article is general information, not legal advice. Confirm the details with your agent and your own contract.*
+
+---
+
+## Editorial note — remove before publishing
+
+- 一次情報リンクは本文に反映済み（2026-11-22）。一覧は [../docs/blog-publishing-prep.md](../docs/blog-publishing-prep.md)。公開直前にリンクの生存を再確認する。

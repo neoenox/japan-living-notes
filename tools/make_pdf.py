@@ -1,84 +1,85 @@
-import re, sys, markdown, pathlib
-from playwright.sync_api import sync_playwright
-sys.path.insert(0, str(pathlib.Path(__file__).parent))
-import iso
-import guides
+def main():
+    import re, sys, markdown, pathlib
+    from playwright.sync_api import sync_playwright
+    sys.path.insert(0, str(pathlib.Path(__file__).parent))
+    import iso
+    import guides
 
-GUIDE = sys.argv[1] if len(sys.argv) > 1 else "rental"
-CFG = guides.CONFIGS[GUIDE]()
-FIGS, TITLES, SUMMARY, TILES, CALLOUT = CFG["figs"], CFG["titles"], CFG["summary"], CFG["tiles"], CFG["callout"]
-CALLOUT_BEFORE = CFG.get("callout_before", {})
+    GUIDE = sys.argv[1] if len(sys.argv) > 1 else "rental"
+    CFG = guides.CONFIGS[GUIDE]()
+    FIGS, TITLES, SUMMARY, TILES, CALLOUT = CFG["figs"], CFG["titles"], CFG["summary"], CFG["tiles"], CFG["callout"]
+    CALLOUT_BEFORE = CFG.get("callout_before", {})
 
-root = pathlib.Path(__file__).resolve().parent.parent
-md = (root / CFG["md"]).read_text(encoding="utf-8")
-md = re.sub(r"^(☐ .*)$", lambda m: "\n<div class='ck'>" + m.group(1) + "</div>\n", md, flags=re.M)
-lines = md.split("\n"); out_lines = []
-LI = r"^> (- |\d+\. )"
-for i, ln in enumerate(lines):
-    if re.match(LI, ln) and i and lines[i-1].startswith("> ") and not re.match(LI, lines[i-1]):
-        out_lines.append(">")
-    if not re.match(LI, ln) and i and re.match(LI, lines[i-1]) and ln.startswith("> "):
-        out_lines.append(">")
-    out_lines.append(ln)
-md = "\n".join(out_lines)
-body = markdown.markdown(md, extensions=["tables", "sane_lists"])
-
-
-def opener(n):
-    tiles = "".join(f"<div class='tile'><div class='tn'>{a}<span>{b}</span></div><div class='tl'>{c}</div></div>" for a, b, c in TILES[n])
-    scn = CFG["scene_map"].get(n, n)
-    art_svg = iso.scene(scn, CFG["tags"][n]) if n in CFG["tags"] else iso.scene(scn)
-    return (f"<section class='opener'><div class='obig'>{n}</div><div class='olabel'>CHAPTER {n}</div>"
-            f"<h2 class='otitle'>{TITLES[n]}</h2><div class='osum'>{SUMMARY[n]}</div>"
-            f"<div class='oart'>{art_svg}</div><div class='tiles'>{tiles}</div></section>")
+    root = pathlib.Path(__file__).resolve().parent.parent
+    md = (root / CFG["md"]).read_text(encoding="utf-8")
+    md = re.sub(r"^(☐ .*)$", lambda m: "\n<div class='ck'>" + m.group(1) + "</div>\n", md, flags=re.M)
+    lines = md.split("\n"); out_lines = []
+    LI = r"^> (- |\d+\. )"
+    for i, ln in enumerate(lines):
+        if re.match(LI, ln) and i and lines[i-1].startswith("> ") and not re.match(LI, lines[i-1]):
+            out_lines.append(">")
+        if not re.match(LI, ln) and i and re.match(LI, lines[i-1]) and ln.startswith("> "):
+            out_lines.append(">")
+        out_lines.append(ln)
+    md = "\n".join(out_lines)
+    body = markdown.markdown(md, extensions=["tables", "sane_lists"])
 
 
-def chapter_block(chunk):
-    m = re.match(r"<h2>Chapter (\d+): (.*?)</h2>", chunk)
-    if not m:
-        return chunk
-    n = int(m.group(1))
-    rest = chunk[m.end():]
-    head = opener(n) + f"<div class='chbar'>CHAPTER {n} <i>/</i> {TITLES[n].upper()}</div>" + FIGS.get(n, "")
-    callout = ""
-    if n in CALLOUT:
-        k, t, x = CALLOUT[n]
-        callout = f"<div class='callout {k}'><div class='ctype'>{'CAUTION' if k == 'warn' else 'TIP'}</div><div><b>{t}</b><br>{x}</div></div>"
-    anchor = CALLOUT_BEFORE.get(n)
-    if anchor and callout:
-        target = re.search(rf"<h3>{re.escape(anchor)}(?:\b|:)", rest)
-        if not target:
-            raise ValueError(f"Callout anchor not found: chapter {n}, heading {anchor}")
-        rest = rest[:target.start()] + callout + rest[target.start():]
-        tail = ""
-    else:
-        tail = callout
-    return head + rest + tail
+    def opener(n):
+        tiles = "".join(f"<div class='tile'><div class='tn'>{a}<span>{b}</span></div><div class='tl'>{c}</div></div>" for a, b, c in TILES[n])
+        scn = CFG["scene_map"].get(n, n)
+        art_svg = iso.scene(scn, CFG["tags"][n]) if n in CFG["tags"] else iso.scene(scn)
+        return (f"<section class='opener'><div class='obig'>{n}</div><div class='olabel'>CHAPTER {n}</div>"
+                f"<h2 class='otitle'>{TITLES[n]}</h2><div class='osum'>{SUMMARY[n]}</div>"
+                f"<div class='oart'>{art_svg}</div><div class='tiles'>{tiles}</div></section>")
 
 
-body = re.sub(r"<h1>.*?</h3>", "", body, count=1, flags=re.S)
-parts = re.split(r"(?=<h2>)", body)
-pre, chunks = parts[0], parts[1:]
-front = ""
-if chunks and not chunks[0].startswith("<h2>Chapter"):
-    front = chunks.pop(0)
-out_chunks = []
-for c in chunks:
-    c = chapter_block(c)
-    c = re.sub(r"<h2>(Appendix [A-H])", r"<h2 class='ap'>\1", c)
-    c = c.replace("<h2>Appendices</h2>", "<h2 class='aps'>Appendices</h2>")
-    out_chunks.append(c)
+    def chapter_block(chunk):
+        m = re.match(r"<h2>Chapter (\d+): (.*?)</h2>", chunk)
+        if not m:
+            return chunk
+        n = int(m.group(1))
+        rest = chunk[m.end():]
+        head = opener(n) + f"<div class='chbar'>CHAPTER {n} <i>/</i> {TITLES[n].upper()}</div>" + FIGS.get(n, "")
+        callout = ""
+        if n in CALLOUT:
+            k, t, x = CALLOUT[n]
+            callout = f"<div class='callout {k}'><div class='ctype'>{'CAUTION' if k == 'warn' else 'TIP'}</div><div><b>{t}</b><br>{x}</div></div>"
+        anchor = CALLOUT_BEFORE.get(n)
+        if anchor and callout:
+            target = re.search(rf"<h3>{re.escape(anchor)}(?:\b|:)", rest)
+            if not target:
+                raise ValueError(f"Callout anchor not found: chapter {n}, heading {anchor}")
+            rest = rest[:target.start()] + callout + rest[target.start():]
+            tail = ""
+        else:
+            tail = callout
+        return head + rest + tail
 
-TOC = "".join(f"<li><b>{i}</b> {TITLES[i]}</li>" for i in range(CFG["n_ch"])) + f"<li><b>A-{CFG['ap_last']}</b> {CFG['toc_extra']}</li>"
-cover = (f"<section class='cover'><div class='ctag'>PRACTICAL GUIDE · 2026</div><h1>{CFG['cover_title']}</h1>"
-         f"<div class='csub'>{CFG['cover_sub']}</div>"
-         f"<div class='cart'>{iso.cover_art()}</div>"
-         f"<div class='cbadges'>{''.join('<span>' + b + '</span>' for b in CFG['badges'])}</div>"
-         f"<div class='cfoot'>Japan Living Notes</div></section>")
-intro = f"<section class='intro'><h2 class='aps'>Contents</h2><ol class='toc'>{TOC}</ol>{pre}{front}</section>"
-body = cover + intro + "".join(out_chunks)
 
-css = """
+    body = re.sub(r"<h1>.*?</h3>", "", body, count=1, flags=re.S)
+    parts = re.split(r"(?=<h2>)", body)
+    pre, chunks = parts[0], parts[1:]
+    front = ""
+    if chunks and not chunks[0].startswith("<h2>Chapter"):
+        front = chunks.pop(0)
+    out_chunks = []
+    for c in chunks:
+        c = chapter_block(c)
+        c = re.sub(r"<h2>(Appendix [A-H])", r"<h2 class='ap'>\1", c)
+        c = c.replace("<h2>Appendices</h2>", "<h2 class='aps'>Appendices</h2>")
+        out_chunks.append(c)
+
+    TOC = "".join(f"<li><b>{i}</b> {TITLES[i]}</li>" for i in range(CFG["n_ch"])) + f"<li><b>A-{CFG['ap_last']}</b> {CFG['toc_extra']}</li>"
+    cover = (f"<section class='cover'><div class='ctag'>PRACTICAL GUIDE · 2026</div><h1>{CFG['cover_title']}</h1>"
+             f"<div class='csub'>{CFG['cover_sub']}</div>"
+             f"<div class='cart'>{iso.cover_art()}</div>"
+             f"<div class='cbadges'>{''.join('<span>' + b + '</span>' for b in CFG['badges'])}</div>"
+             f"<div class='cfoot'>Japan Living Notes</div></section>")
+    intro = f"<section class='intro'><h2 class='aps'>Contents</h2><ol class='toc'>{TOC}</ol>{pre}{front}</section>"
+    body = cover + intro + "".join(out_chunks)
+
+    css = """
 @page { size: A4; margin: 18mm 18mm 20mm 18mm; @bottom-center { content: 'Japan Living Notes  ·  ' counter(page); font-family: Inter, sans-serif; font-size: 7.5pt; color: #8a8f99; letter-spacing: 1pt; } }
 @page full { size: A4; margin: 0; @bottom-center { content: none; } }
 * { box-sizing: border-box; }
@@ -134,18 +135,21 @@ hr { border:0; border-top:.5pt solid #cfcabd; margin:14pt 0; }
 .callout { display:flex; gap:14pt; padding:12pt 16pt; margin:12pt 0; page-break-inside:avoid; font-size:9.5pt; background:var(--paper); border-left:3pt solid var(--navy); }
 .callout.warn { border-left-color:var(--red); }
 .callout .ctype { font-size:7pt; letter-spacing:2pt; font-weight:800; color:var(--navy); padding-top:2pt; width:44pt; flex:none; } .callout.warn .ctype { color:var(--red); }
-"""
-html = f"<!doctype html><html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap' rel='stylesheet'><style>{css}</style></head><body>{body}</body></html>"
-tmp = root / "tools" / f"guide-{GUIDE}.html"
-tmp.write_text(html, encoding="utf-8")
-out = root / CFG["out"]
+    """
+    html = f"<!doctype html><html><head><meta charset='utf-8'><link href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap' rel='stylesheet'><style>{css}</style></head><body>{body}</body></html>"
+    tmp = root / "tools" / f"guide-{GUIDE}.html"
+    tmp.write_text(html, encoding="utf-8")
+    out = root / CFG["out"]
 
-with sync_playwright() as p:
-    b = p.chromium.launch(channel="chrome")
-    try:
-        pg = b.new_page()
-        pg.goto(tmp.as_uri(), wait_until='networkidle'); pg.evaluate('document.fonts.ready')
-        pg.pdf(path=str(out), prefer_css_page_size=True, print_background=True, display_header_footer=False,)
-    finally:
-        b.close()
-print(out)
+    with sync_playwright() as p:
+        b = p.chromium.launch(channel="chrome")
+        try:
+            pg = b.new_page()
+            pg.goto(tmp.as_uri(), wait_until='load'); pg.evaluate('document.fonts.ready')
+            pg.pdf(path=str(out), prefer_css_page_size=True, print_background=True, display_header_footer=False,)
+        finally:
+            b.close()
+    print(out)
+
+if __name__ == "__main__":
+    main()

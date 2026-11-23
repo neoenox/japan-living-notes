@@ -58,6 +58,8 @@ r/japanlife は自己宣伝に厳しい。**回答だけ**を続け、プロフ�
 
 ### 記事B: Can a Foreigner Rent an Apartment in Japan? Documents and Guarantors
 
+本文は [blog-foreigner-renting.md](blog-foreigner-renting.md) に書き下ろし済み（2026-11-22、未公開）。下の箇条書きは構成のメモとして残す。
+
 - 導入: 法律上は禁止されていない。現実の壁
 - 必要書類（在留カード、パスポート、収入証明、緊急連絡先、保証会社）
 - 保証会社と連帯保証人の違い
