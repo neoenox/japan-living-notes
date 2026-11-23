@@ -20,7 +20,10 @@
 
 - [ ] PayhipストアのAbout Me：公開ストアページにはAbout欄が表示されていない。ストアビルダーでセクションを追加するか、追加しないかを決める（文面は `marketing/payhip-store-about.md` に用意済み）
 - [ ] 11/25以降のピン方針（期限11/24）: 判断材料を `docs/post-day7-pins.md` にまとめた。数値は未取得のまま
-- [ ] Pinterestの予約6件のうち、movein / moveout の宛先が `payhip.com/b/4ak8D` か確認する（costs / foreigners / emails / listing は確認済み。残り2件は 11/23〜11/24 の公開後に確認）
+  - 2026-11-23 16:40 JST 合意（grilling）: 11/25 はまず Pinterest Analytics と Payhip ダッシュボード／Customers から数字を取得して `launch-baseline-2026-11-18.md` の Day 7 列に記入する。数字は omp がログイン済みブラウザから読み取り、開かない時は「未取得」と書いて推測・0で埋めない。取得後にファネル表で止まった場所を選び、ピン継続を決める。新しいチェックリストは作らず既存ファイルに集約する（`docs/day7-decisions.md` / `docs/post-day7-pins.md` に反映済み）
+- [ ] Pinterestの予約6件のうち、movein / moveout の宛先が `payhip.com/b/4ak8D` か確認する（costs / foreigners / emails / listing / movein は確認済み。残り1件は 11/24 の公開後に確認）
+  - 2026-11-23 13:33 JST 確認（ログイン済み Chrome の「すべてのピン」→ ピン詳細、およびログインなしの詳細URL直取得）: `movein` は公開済み。ピンID `687995280624022670`、詳細 `https://www.pinterest.com/pin/687995280624022670/` は HTTP 200、タイトル・説明文一致、clickthrough `https://payhip.com/b/4ak8D?utm_source=Pinterest&utm_medium=organic`（第1弾）。公開画像署名 `164fb820f217fb96aab8bca27fe4a031` がローカル `0f12fa906c393d0931e9f6320a7d78ac` と不一致だったため、`tools/check_pin.py` の署名照合は unpublished と誤判定した。タイトル照合に変更して誤判定を解消（`docs/schedule.md` に記録済み）
+  - 2026-11-23 13:18 JST 確認（ログインなし、`python tools/check_pin.py listing movein moveout`）: `listing` は published・pin_id `687995280624005769`・clickthrough 第1弾。`movein` と `moveout` は unpublished と判定されたが、上記のとおり `movein` は署名照合の誤判定だった。10:05 の予約タスク実行（Windows タスク スケジューラ、ログに `RESULT ... movein status=unpublished`）も同じ誤判定
   - 2026-11-22 13:21 JST 確認（ログインなし、詳細URLを直接取得）: listing（ピンID `687995280624005769`）は HTTP 200、タイトル "How to read a Japanese apartment listing"、clickthrough は `payhip.com/b/4ak8D?utm_source=Pinterest&utm_medium=organic`（第1弾）。ピンIDはプロフィールJSONの `image_signature` と `pin_listing.png` の照合で特定。`docs/schedule.md` に記録済み
   - 2026-11-22 13:23 JST 確認（ログインなし）: movein / moveout はまだ未公開。公開ボード・プロフィールJSON・Pinterest検索のいずれにも画像署名がなく、ピンIDは未取得。宛先は「未取得」のまま。11/23・11/24 の公開後に同じ手順で確認する（`docs/schedule.md` に記録済み）
 - [ ] `initial-cost-calculator.xlsx` は、Payhipで配布中のファイルとリポジトリの版でSHA256が違う（サイズは同じ）。次にExcelを触るときに、どちらを正とするか決める

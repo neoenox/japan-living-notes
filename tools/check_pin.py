@@ -29,6 +29,16 @@ UA = {
     )
 }
 TARGET = "payhip.com/b/4ak8D"
+# Confirmed pin IDs. Pinterest may reprocess an image and change its signature,
+# and the profile JSON does not always expose the title. Record the ID once a
+# pin is confirmed so later checks can verify the detail page directly.
+KNOWN_IDS = {
+    "costs": "687995280623935762",
+    "foreigners": "687995280623936667",
+    "emails": "687995280623936675",
+    "listing": "687995280624005769",
+    "movein": "687995280624022670",
+}
 # Expected strings come from marketing/pinterest-schedule.md (the reservation record).
 EXPECTED = {
     "costs": ("Japan apartment initial costs explained", "Deposit, key money, agency fee"),
@@ -55,8 +65,15 @@ def signature(key: str) -> str:
     return hashlib.md5(png.read_bytes()).hexdigest()
 
 
-def pin_ids(sig: str) -> list[str]:
-    """Find public pins whose image signature matches the local PNG (MD5)."""
+def pin_ids(key: str) -> tuple[list[str], str]:
+    """Find public pins by title, falling back to the local PNG signature.
+
+    Pinterest may reprocess the uploaded image, changing image_signature.
+    The pin title is stable, so match on it first and use the signature only
+    as a fallback for older pins whose title is not exposed in profile JSON.
+    """
+    title, _ = EXPECTED[key]
+    sig = signature(key)
     _, page = get(PROFILE)
     match = re.search(
         r'<script id="__PWS_INITIAL_PROPS__" type="application/json">(.*?)</script>', page, re.S
@@ -64,11 +81,27 @@ def pin_ids(sig: str) -> list[str]:
     if not match:
         raise RuntimeError("profile JSON not found")
     pins = json.loads(match.group(1)).get("initialReduxState", {}).get("pins", {})
-    return [
+    by_title = [
+        str(v["id"])
+        for v in pins.values()
+        if v.get("title") == title and str(v.get("id", "")).isdigit()
+    ]
+    by_sig = [
         str(v["id"])
         for v in pins.values()
         if v.get("image_signature") == sig and str(v.get("id", "")).isdigit()
     ]
+    known = [KNOWN_IDS[key]] if key in KNOWN_IDS else []
+    ids = list(dict.fromkeys(by_title + by_sig + known))
+    if by_title:
+        method = "title"
+    elif by_sig:
+        method = "signature"
+    elif known:
+        method = "known_id"
+    else:
+        method = "none"
+    return ids, method
 
 
 def detail(pid: str, key: str) -> str:
@@ -92,9 +125,9 @@ def detail(pid: str, key: str) -> str:
 
 def check(key: str) -> bool:
     sig = signature(key)
-    ids = pin_ids(sig)
+    ids, method = pin_ids(key)
     if not ids:
-        print(f"RESULT {now_jst()} pin={key} status=unpublished pin_id=未取得 clickthrough=未取得 sig={sig}", flush=True)
+        print(f"RESULT {now_jst()} pin={key} status=unpublished pin_id=未取得 clickthrough=未取得 sig={sig} match=none", flush=True)
         return False
     ok = False
     for pid in ids:
@@ -104,7 +137,7 @@ def check(key: str) -> bool:
             for part in ("http=200", "title=OK", "desc=OK", "pinid_in_page=OK", "destination=OK")
         )
         ok = ok or good
-        print(f"RESULT {now_jst()} pin={key} status={'published' if good else 'needs_review'} pin_id={pid} {info}", flush=True)
+        print(f"RESULT {now_jst()} pin={key} status={'published' if good else 'needs_review'} pin_id={pid} {info} sig={sig} match={method}", flush=True)
     return ok
 
 
